@@ -3,7 +3,7 @@ using System.Collections;
 
 public class UserInput : Singleton<UserInput> 
 {
-     
+
      public float MouseSensitivityVertical = 1f;
      public float MouseSensitivityHorizontal = 1f;     
      
@@ -54,54 +54,26 @@ public class UserInput : Singleton<UserInput>
           }
 
 
-
-          if(Input.GetKey(KeyCode.W))
-          {
-               GrendelPlayer.Instance.MovePlayer(new Vector3(0,1,0));
-          }
-          
-          if(Input.GetKey(KeyCode.A))
-          {
-               GrendelPlayer.Instance.MovePlayer(new Vector3(-1,0,0));
-          }
-          
-          if(Input.GetKey(KeyCode.D))
-          {
-               GrendelPlayer.Instance.MovePlayer(new Vector3(1,0,0));
-          }
-          
-          if(Input.GetKey(KeyCode.S))
-          {
-               GrendelPlayer.Instance.MovePlayer(new Vector3(0,-1,0));
-          }
-
-          Vector3 mousePos = MainCamera.Instance.camera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1));
-          mousePos = TileManager.Instance.transform.InverseTransformPoint(mousePos);
-
-
-
-
-        Color colorToUse = Color.cyan;
-        
-        if (!TileManager.Instance.CheckPassability(mousePos))
-        {
-            colorToUse = Color.red;
-        }
-        
-        Color highlightColor = GrendelColor.FlashingColor(colorToUse, 2f);
-        highlightColor.a += 0.12f;
-        TileManager.Instance.HighlightTile.color = highlightColor;
-        
-        TileManager.Instance.HighlightTile.transform.localPosition = TileManager.Instance.GetTileCoordinates(mousePos);
-        
-        if(Input.GetMouseButtonDown(0) && colorToUse != Color.red)
-        {
-//            TileManager.TileCoordinate start = new TileManager.TileCoordinate
-//                                           ( (int)GrendelPlayer.Instance.transform.localPosition.x / TileManager.Instance.TileSize,
-//                                             (int)GrendelPlayer.Instance.transform.localPosition.y / TileManager.Instance.TileSize);
-//            TileManager.TileCoordinate end =  new TileManager.TileCoordinate((int)Mathf.Floor(mousePos.x / TileManager.Instance.TileSize),
-//                             (int)Mathf.Floor(mousePos.y / TileManager.Instance.TileSize));            
-        }
+//TODO: Replace with TNManager.player
+//          if(Input.GetKey(KeyCode.W))
+//          {
+//               GrendelPlayer.Instance.MovePlayer(new Vector3(0,1,0));
+//          }
+//
+//          if(Input.GetKey(KeyCode.A))
+//          {
+//               GrendelPlayer.Instance.MovePlayer(new Vector3(-1,0,0));
+//          }
+//
+//          if(Input.GetKey(KeyCode.D))
+//          {
+//               GrendelPlayer.Instance.MovePlayer(new Vector3(1,0,0));
+//          }
+//
+//          if(Input.GetKey(KeyCode.S))
+//          {
+//               GrendelPlayer.Instance.MovePlayer(new Vector3(0,-1,0));
+//          }
 
      }
           

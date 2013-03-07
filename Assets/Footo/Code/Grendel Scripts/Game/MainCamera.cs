@@ -25,11 +25,21 @@ public class MainCamera : Singleton<MainCamera>
     // Update is called once per frame
     void Update () 
     {
+        if (Application.loadedLevelName == "MainMenu")
+        {
+            return;
+        }
+
         if (NetworkManager.Instance == null && Application.isEditor && mLocalPlayer == null)
         {
             GameObject tempPlayer = (GameObject)GameObject.Instantiate(PlayerPrefab, new Vector3(0,2,0), Quaternion.identity);
             mLocalPlayer = tempPlayer.GetComponent<FootoEntity>();
             mLocalPlayer.Owner = new TNet.Player("TempPlayer");
+
+            if (mLocalPlayer == null)
+            {
+                return;
+            }
         }
 
         mousPos = Input.mousePosition;

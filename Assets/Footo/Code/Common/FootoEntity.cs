@@ -130,6 +130,7 @@ private void SetupWeapons()
     
             if(Physics.Raycast(ray,out hit,1000))
             {
+
                 Vector3 dif = hit.point - mTrans.position;
                 dif.y = 0;
         

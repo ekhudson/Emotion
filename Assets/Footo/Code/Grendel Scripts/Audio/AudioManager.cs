@@ -21,7 +21,7 @@ public class AudioManager : Singleton<AudioManager>
 	
 	public int MaxPlayingMusicTracks = 3;
 	
-	//private List<AudioClip> _currentPlayingMusicTracks = new List<AudioClip>();
+	//private List<AudioClip> _currentPlayingMusicTracks = new List<AudioClip>();a
 	
 	private Dictionary<int, AudioSource> AudioDictionary = new Dictionary<int, AudioSource>();
 	private int MusicAudioSourceID = 0;
@@ -37,6 +37,7 @@ public class AudioManager : Singleton<AudioManager>
 	void Update () 
 	{
 		//not sure if I need this yet
+        transform.position = MainCamera.Instance.transform.position;
 	}
 	
 	public void VolumeUp()

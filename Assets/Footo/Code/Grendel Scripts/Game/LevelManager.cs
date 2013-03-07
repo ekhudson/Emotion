@@ -15,12 +15,22 @@ public class LevelManager : Singleton<LevelManager>
 		get{ return _musicTrackIndex; }
 		set{ _musicTrackIndex = value; }
 	}
+
+    protected override void Awake()
+    {
+        if (_instance != null)
+        {
+            AudioManager.Instance.PlayMusicTrack(BackgroundMusicTrack);
+        }
+
+        base.Awake();
+    }
 	
 	// Use this for initialization
 	void Start () 
 	{
 		Console.Instance.OutputToConsole(string.Format("LevelManager: {0} loaded, calling music track.", Application.loadedLevelName), Console.Instance.Style_Admin);
-		PlayBackgroundMusicTrack();		
+		PlayBackgroundMusicTrack();
 	}
 	
 	// Update is called once per frame

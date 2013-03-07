@@ -17,8 +17,9 @@ using System.Reflection;
 public class Singleton<T> : MonoBehaviour where T : class
 { 
 	public bool DoNotDestroyOnLoad = false;
+    public bool DestroyGameObject = false;
 	
-	private static T _instance;
+	protected static T _instance;
 	
 	static public T Instance
 	{
@@ -44,7 +45,14 @@ public class Singleton<T> : MonoBehaviour where T : class
 		}
 		else
 		{
-			Destroy( this );
+            if (DestroyGameObject)
+            {
+                GameObject.Destroy(this.gameObject);
+            }
+            else
+            {
+			   Destroy( this );
+            }
 		}
 	}
 			

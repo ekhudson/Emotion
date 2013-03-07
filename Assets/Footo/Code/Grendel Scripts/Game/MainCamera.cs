@@ -15,7 +15,18 @@ public class MainCamera : Singleton<MainCamera>
 	public float maxDist = 7f;
 
     private FootoEntity mLocalPlayer;
-	
+
+    protected override void Awake()
+    {
+        if (_instance != null)
+        {
+            _instance.transform.position = transform.position;
+            _instance.transform.rotation = transform.rotation;
+        }
+
+        base.Awake();
+    }
+
     // Use this for initialization
     void Start () 
     {
@@ -46,7 +57,15 @@ public class MainCamera : Singleton<MainCamera>
         mousPos.z = CameraOffset.y;
 
 		mousPos = camera.ScreenToWorldPoint(mousPos);
-		localPlayerPos = mLocalPlayer == null ? NetworkManager.Instance.LocalPlayerAvatar.transform.position : mLocalPlayer.transform.position;
+
+        try
+        {
+		    localPlayerPos = mLocalPlayer == null ? NetworkManager.Instance.LocalPlayerAvatar.transform.position : mLocalPlayer.transform.position;
+        }
+        catch
+        {
+            return;
+        }
 
 		mousPos.y = localPlayerPos.y;
 		

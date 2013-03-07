@@ -1,24 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Footo\Code\Grendel Scripts\Audio\AudioManager.cs">
-    <Files>
-      <File FileName="Assets\Footo\Code\Common\WeaponClass.cs" Line="1" Column="1" />
-      <File FileName="Assets\Footo\Code\Common\FootoEntity.cs" Line="213" Column="14" />
-      <File FileName="Assets\Footo\Code\Common\ItemClass.cs" Line="1" Column="1" />
-      <File FileName="Assets\Footo\Code\Common\ProjectileClass.cs" Line="1" Column="1" />
-      <File FileName="Assets\Footo\Code\Common\NetworkManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\TNet\Client\TNManager.cs" Line="251" Column="55" />
-      <File FileName="Assets\Footo\Code\Common\AdjustableAudioClip.cs" Line="1" Column="1" />
-      <File FileName="Assets\Footo\Code\Grendel Scripts\Game\MainCamera.cs" Line="1" Column="1" />
-      <File FileName="Assets\TNet\Examples\Scripts\ExampleMenu.cs" Line="408" Column="26" />
-      <File FileName="Assets\Footo\Code\Grendel Scripts\Utility\Console.cs" Line="321" Column="1" />
-      <File FileName="Assets\Footo\Code\Grendel Scripts\Game\UserInput.cs" Line="60" Column="58" />
-      <File FileName="Assets\Footo\Code\Grendel Scripts\UI\ScreenNotification.cs" Line="102" Column="1" />
-      <File FileName="Assets\Footo\Code\Grendel Scripts\Game\GameManager.cs" Line="28" Column="3" />
-      <File FileName="Assets\TNet\Client\TNGameClient.cs" Line="153" Column="1" />
-      <File FileName="Assets\Footo\Code\Grendel Scripts\Audio\AudioManager.cs" Line="40" Column="69" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

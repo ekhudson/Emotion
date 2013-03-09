@@ -17,7 +17,7 @@ public class HealthUpdateEvent : EventBase
 		get { return mUpdateAmount; }
 	}	
 
-    public HealthUpdateEvent(HealthUpdateType.HealthUpdateTypes updateType, int updateAmount, int newHealthAmount, Vector3 position) : base(position)
+    public HealthUpdateEvent(object sender, HealthUpdateType.HealthUpdateTypes updateType, int updateAmount, int newHealthAmount, Vector3 position) : base(position, sender)
     {   		
 		mUpdateType = updateType;
 		mUpdateAmount = updateAmount;

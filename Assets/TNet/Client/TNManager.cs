@@ -304,7 +304,7 @@ public class TNManager : MonoBehaviour
 	static public void LoadLevel (string levelName)
 	{
 		if (isConnected) mInstance.mClient.LoadLevel(levelName);
-		else Application.LoadLevel(levelName);
+		else LevelManager.Instance.LoadLevel(levelName);
 	}
 
 	/// <summary>
@@ -710,7 +710,8 @@ public class TNManager : MonoBehaviour
 	{
 		if (!string.IsNullOrEmpty(levelName))
 		{
-			Application.LoadLevel(levelName);
+			//Application.LoadLevel(levelName);
+            LevelManager.Instance.LoadLevel(levelName);
 		}
 	}
 

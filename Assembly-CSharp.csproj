@@ -57,6 +57,7 @@
      <Compile Include="Assets\Footo\Code\Common\LevelData.cs" />
      <Compile Include="Assets\Footo\Code\Common\NetworkCamera.cs" />
      <Compile Include="Assets\Footo\Code\Common\NetworkManager.cs" />
+     <Compile Include="Assets\Footo\Code\Common\OrbitScript.cs" />
      <Compile Include="Assets\Footo\Code\Common\ProjectileClass.cs" />
      <Compile Include="Assets\Footo\Code\Common\ServerListBtnInfo.cs" />
      <Compile Include="Assets\Footo\Code\Common\SingletonComponent.cs" />
@@ -69,6 +70,7 @@
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\EventBase.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\EventManager.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\EventTransceiver.cs" />
+     <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Game\GameStateEvent.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\ConnectionRegistry.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\EditorManager.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\EditorObject.cs" />
@@ -81,6 +83,7 @@
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\TriggerEventEnter.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\TriggerEventExit.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\TriggerEventStay.cs" />
+     <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\UserInput\UserInputKeyEvent.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Game\AIBase.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Game\BaseObject.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Game\Entity.cs" />
@@ -104,6 +107,7 @@
      <Compile Include="Assets\Footo\Code\Grendel Scripts\ShellCasing.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\UI\ScreenNotification.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\UI\ScreenNotificationManager.cs" />
+     <Compile Include="Assets\Footo\Code\Grendel Scripts\UI\UIManager.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Utility\Console.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Utility\ConsoleCommandList.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Utility\ConsoleCommandParams.cs" />

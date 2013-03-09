@@ -23,7 +23,8 @@ public class AudioManager : Singleton<AudioManager>
 	
 	//private List<AudioClip> _currentPlayingMusicTracks = new List<AudioClip>();a
 	
-	private Dictionary<int, AudioSource> AudioDictionary = new Dictionary<int, AudioSource>();
+	private Dictionary<int, AudioSource> SFXDictionary = new Dictionary<int, AudioSource>();
+    private Dictionary<int, AudioSource> MusicDictionary = new Dictionary<int, AudioSource>();
 	private int MusicAudioSourceID = 0;
 	
 	
@@ -58,29 +59,35 @@ public class AudioManager : Singleton<AudioManager>
 	
 	public void UpdateAudio()
 	{		
-		foreach(AudioSource source in AudioDictionary.Values)
+		foreach(AudioSource source in SFXDictionary.Values)
 		{
-			source.volume = GlobalVolumeSFX = GlobalVolumeMusic; //TODO: Separate these	
+			source.volume = GlobalVolumeSFX;
 		}
+
+        foreach(AudioSource source in MusicDictionary.Values)
+        {
+            source.volume = GlobalVolumeMusic;
+        }
 	}
 	
 	public void PlayMusicTrack(AudioClip musicTrack)
 	{
 		AudioSource source;
 		
-		if (!AudioDictionary.ContainsKey(MusicAudioSourceID))
+		if (!MusicDictionary.ContainsKey(MusicAudioSourceID))
 		{		
 			source = gameObject.AddComponent<AudioSource>();
 			MusicAudioSourceID = source.GetInstanceID();
-			AudioDictionary.Add(MusicAudioSourceID, source);
+			MusicDictionary.Add(MusicAudioSourceID, source);
 		}
 		else
 		{
-			source = AudioDictionary[MusicAudioSourceID];
+			source = MusicDictionary[MusicAudioSourceID];
 		}
 		
 		source.clip = musicTrack;
 		source.volume = GlobalVolumeMusic;
+        source.loop = true;
 		
 		try
 		{
@@ -98,7 +105,7 @@ public class AudioManager : Singleton<AudioManager>
 	{
 		if (MusicAudioSourceID != 0)
 		{
-			int index = AudioList.Instance.MusicTracks.IndexOf( AudioDictionary[MusicAudioSourceID].clip );
+			int index = AudioList.Instance.MusicTracks.IndexOf( MusicDictionary[MusicAudioSourceID].clip );
 			index += increment;
 			
 			if (index > (AudioList.Instance.MusicTracks.Count - 1)){ index = 0; } //limit going up in tracks

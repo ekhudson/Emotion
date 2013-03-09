@@ -10,16 +10,19 @@ public class EventBase
     // Location at which the event occurred.
     public readonly Vector3 Place;	
 	
+	public readonly object Sender;
+	
     // Create a new event.
-    protected EventBase() : this(Vector2.zero)
+    protected EventBase() : this(Vector3.zero, null)
     {
     }
 
     // Create a new event at a location in the world.
-    protected EventBase(Vector2 place)
+    protected EventBase(Vector3 place, object sender)
     {
-        Time = UnityEngine.Time.fixedTime; 
-		//Time = time;
+       // Time = UnityEngine.Time.fixedTime; 
+		Time = 0.2f;
         Place = place;
+		Sender = sender;
     }
 }

@@ -51,7 +51,7 @@ public class ProjectileClass : MonoBehaviour
         }
         else
         {
-            DO_M.UpdateHealth(-ProjectileDamage, HealthUpdateType.HealthUpdateTypes.BallisticDamage);
+            DO_M.UpdateHealth(this, -ProjectileDamage, HealthUpdateType.HealthUpdateTypes.BallisticDamage);
         }
 
         DefaultHitEffect.transform.parent = null;

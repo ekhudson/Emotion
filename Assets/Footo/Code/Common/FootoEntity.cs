@@ -411,11 +411,11 @@ private void SetupWeapons()
  /// <param name='updateValue'>
  /// Update value.
  /// </param>
-    public void UpdateHealth(int updateValue, HealthUpdateType.HealthUpdateTypes type)
+    public void UpdateHealth(object sender, int updateValue, HealthUpdateType.HealthUpdateTypes type)
     {       
         mCurrentHealth = Mathf.Clamp(mCurrentHealth + updateValue, 0, MaxHealth);
     
-        EventManager.Instance.Post(new HealthUpdateEvent(type, updateValue, mCurrentHealth, transform.position));
+        EventManager.Instance.Post(new HealthUpdateEvent(sender, type, updateValue, mCurrentHealth, transform.position));
     
         if (mCurrentHealth <= 0)
         {

@@ -1,7 +1,4 @@
-//------------------------------------------
-//            Tasharen Network
-// Copyright © 2012 Tasharen Entertainment
-//------------------------------------------
+#define DEBUG
 
 using UnityEngine;
 using System.Collections;
@@ -80,39 +77,39 @@ public class FootoEntity : TNBehaviour
         SetupWeapons();
     }
  
-private void SetupWeapons()
-{
-    if (Weapons.Count == 0)
+    private void SetupWeapons()
     {
-        Debug.Log(gameObject.name + " has no weapons", this);
-    }
-    
-    if (Weapons.Count > AttachPoints.Count)
-    {
-        Debug.Log(string.Format("Entity {0} have more items than attach points", gameObject.name), this);
-    }
-    
-    for(int i = 0; i < Weapons.Count; i++)
-    {
-        foreach(ItemAttachPoint attachPoint in AttachPoints)
+        if (Weapons.Count == 0)
         {
-            if (attachPoint.AttachedItem == null)
+            Debug.Log(gameObject.name + " has no weapons", this);
+        }
+        
+        if (Weapons.Count > AttachPoints.Count)
+        {
+            Debug.Log(string.Format("Entity {0} have more items than attach points", gameObject.name), this);
+        }
+        
+        for(int i = 0; i < Weapons.Count; i++)
+        {
+            foreach(ItemAttachPoint attachPoint in AttachPoints)
             {
-                GameObject weaponTemp = (GameObject)GameObject.Instantiate(Weapons[i].gameObject, attachPoint.PhysicalPoint.position, attachPoint.PhysicalPoint.rotation);
-                weaponTemp.transform.parent = attachPoint.PhysicalPoint;
-                Weapons[i] = weaponTemp.GetComponent<WeaponClass>();
-                attachPoint.AttachedItem = Weapons[i];
-                break;
-            }
-            else
-            {
-                continue;
+                if (attachPoint.AttachedItem == null)
+                {
+                    GameObject weaponTemp = (GameObject)GameObject.Instantiate(Weapons[i].gameObject, attachPoint.PhysicalPoint.position, attachPoint.PhysicalPoint.rotation);
+                    weaponTemp.transform.parent = attachPoint.PhysicalPoint;
+                    Weapons[i] = weaponTemp.GetComponent<WeaponClass>();
+                    attachPoint.AttachedItem = Weapons[i];
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
             }
         }
-    }
     
-    mCurrentWeapon = Weapons[0];
-}
+        mCurrentWeapon = Weapons[0];
+    }
 
     void Update ()
     {
@@ -157,6 +154,11 @@ private void SetupWeapons()
             if(Input.GetKey(KeyCode.S))
             { 
                 mTarget += (new Vector3(0, 0 , -1));
+            }
+
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                mCurrentWeapon.ReloadWeapon();
             }
     
             if (Input.GetMouseButtonDown(0))
@@ -390,6 +392,43 @@ private void SetupWeapons()
     }
 
 
+//DEBUG
+    private void DrawWeaponInfo()
+    {
+        float kHeight = 64;
+        float kWidth = 128;
+
+        GUILayout.BeginArea(new Rect(0, Screen.height - kHeight, Screen.width, kHeight));
+
+        GUILayout.BeginVertical();
+            GUILayout.BeginHorizontal();
+
+                GUILayout.Label(string.Format("Current Weapons: {0} | {1} / {2}", mCurrentWeapon.name, mCurrentWeapon.CurrentClipSize, mCurrentWeapon.ClipSize));
+
+                if (mCurrentWeapon.WeaponState == WeaponClass.WEAPON_STATES.RELOADING)
+                {
+                    GUILayout.Box("Reloading", GUILayout.Width(kWidth));
+
+
+                    Rect rect = GUILayoutUtility.GetLastRect();
+
+                    rect.width = kWidth * (mCurrentWeapon.CurrentReoadTime / mCurrentWeapon.ReloadTimeInSeconds);
+
+                    GUI.color = Color.yellow;
+                    GUI.Box(rect, string.Empty);
+                    GUI.color = Color.white;
+                }
+
+            GUILayout.FlexibleSpace();
+
+            GUILayout.EndHorizontal();
+        GUILayout.EndVertical();
+
+        GUILayout.EndArea();
+    }
+
+
+
  /// <summary>
  /// Remember the last player who claimed control of this object.
  /// </summary>
@@ -440,6 +479,8 @@ private void SetupWeapons()
         labelPos.y = Screen.height - labelPos.y;
         labelPos.y -= 72f;
         GUI.Box(new Rect(labelPos.x - 64, labelPos.y, 128, 24), mCurrentHealth.ToString());
+
+        DrawWeaponInfo();
     }
 
     /// <summary>

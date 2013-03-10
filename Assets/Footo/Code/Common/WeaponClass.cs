@@ -25,6 +25,7 @@ public class WeaponClass : ItemClass
 	private bool mIsFiring = false;
 	private AudioSource mAudioSource;
 	private int mCurrentFirePosition = 0;
+    private float mCurrentReloadTime = 0;
 	
 	public enum WEAPON_STATES
 	{
@@ -34,12 +35,28 @@ public class WeaponClass : ItemClass
 		RELOADING,
 	}	
 	
-	private WEAPON_STATES WeaponState;
+	public WEAPON_STATES WeaponState;
 	private float mCurrentCooldown;
 	private float mCurrentClipSize;
 	private float mCurrentFiringTime;
 	private float mAccuracyModifier = 45;
-	
+
+    public float CurrentClipSize
+    {
+        get
+        {
+            return mCurrentClipSize;
+        }
+    }
+
+    public float CurrentReoadTime
+    {
+        get
+        {
+            return mCurrentReloadTime;
+        }
+    }
+
 	public void Awake()
 	{
 		mCurrentClipSize = ClipSize;
@@ -63,7 +80,14 @@ public class WeaponClass : ItemClass
 	
 	public void Update()
 	{
-		if (mIsFiring)
+        if (WeaponState == WEAPON_STATES.RELOADING)
+        {
+            mCurrentReloadTime += Time.deltaTime;
+            mIsFiring = false;
+            return;
+        }
+
+        if (mIsFiring)
 		{
 			if (WeaponState == WEAPON_STATES.IDLE)
 			{
@@ -85,7 +109,7 @@ public class WeaponClass : ItemClass
 		else if (mCurrentFiringTime > 0)
 		{
 			mCurrentFiringTime = Mathf.Clamp(mCurrentFiringTime - Time.deltaTime, 0, mCurrentFiringTime);			
-		}		
+		}
 	}	
 	
 	public void CreateProjectile()
@@ -142,7 +166,10 @@ public class WeaponClass : ItemClass
 	IEnumerator Reload()
 	{
 		WeaponState = WEAPON_STATES.RELOADING;
-		yield return new WaitForSeconds(ReloadTimeInSeconds);
+        mCurrentReloadTime = 0;
+        PlaySound(ReloadSounds);
+
+        yield return new WaitForSeconds(ReloadTimeInSeconds);
 		mCurrentClipSize = ClipSize;
 		WeaponState = WEAPON_STATES.IDLE;
 	}
@@ -162,7 +189,11 @@ public class WeaponClass : ItemClass
 			CreateProjectile();
 			FireEffect01.Emit(1);
             PlaySound(FireSounds);
-			mCurrentClipSize--;
+
+            if (ClipSize > 0)
+            {
+			    mCurrentClipSize--;
+            }
 			
 			if (ClipSize > 0 && mCurrentClipSize <= 0)
 			{					

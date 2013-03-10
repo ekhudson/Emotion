@@ -98,7 +98,14 @@ public class TriggerVolume : EditorObject, IEditorObject
 		base.OnPlayGizmos();
 		
 		if (ObjectList.Count > 0){ Gizmos.color = Color.green; } else { Gizmos.color = Color.red; }
-			Gizmos.DrawWireSphere(transform.position, collider.bounds.extents.x);
+			if (GetComponent<SphereCollider>() != null)
+            {
+             Gizmos.DrawWireSphere(transform.position, collider.bounds.extents.x);
+            }
+            else if (GetComponent<BoxCollider>() != null)
+            {
+                Gizmos.DrawWireCube(transform.position, collider.bounds.size);
+            }
 		
 		foreach(Collider other in ObjectList)
 		{
@@ -115,7 +122,15 @@ public class TriggerVolume : EditorObject, IEditorObject
 		if (_currentActiveObject == gameObject){ return; }
 		
 		Gizmos.color = Color.gray;
-		Gizmos.DrawWireSphere(transform.position, collider.bounds.extents.x);
+
+        if (GetComponent<SphereCollider>() != null)
+        {
+		    Gizmos.DrawWireSphere(transform.position, collider.bounds.extents.x);
+        }
+        else if (GetComponent<BoxCollider>() != null)
+        {
+            Gizmos.DrawWireCube(transform.position, collider.bounds.size);
+        }
 	}	
 	
 	void OnGUI()

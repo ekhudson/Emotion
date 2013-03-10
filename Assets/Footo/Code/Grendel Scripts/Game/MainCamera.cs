@@ -69,7 +69,7 @@ public class MainCamera : Singleton<MainCamera>
 
 		mousPos.y = localPlayerPos.y;
 		
-		Vector3 difVector = mousPos - localPlayerPos;
+		Vector3 difVector = localPlayerPos - mousPos;
 		Vector3 camtarget = localPlayerPos + (difVector * maxDist);
 
 		transform.position = Vector3.Lerp(transform.position, camtarget, CameraFollowSpeed) + CameraOffset;

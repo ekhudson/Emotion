@@ -1,18 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Footo\Code\Grendel Scripts\UI\UIManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Footo\Code\Common\MovableObject.cs">
     <Files>
       <File FileName="Assets\Footo\Code\Common\WeaponClass.cs" Line="1" Column="1" />
       <File FileName="Assets\Footo\Code\Common\FootoEntity.cs" Line="1" Column="1" />
       <File FileName="Assets\Footo\Code\Common\ItemClass.cs" Line="1" Column="1" />
       <File FileName="Assets\Footo\Code\Common\ProjectileClass.cs" Line="1" Column="1" />
-      <File FileName="Assets\TNet\Client\TNManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Footo\Code\Grendel Scripts\Game\MainCamera.cs" Line="1" Column="1" />
-      <File FileName="Assets\TNet\Examples\Scripts\ExampleMenu.cs" Line="1" Column="1" />
-      <File FileName="Assets\Footo\Code\Grendel Scripts\Utility\Console.cs" Line="1" Column="1" />
-      <File FileName="Assets\Footo\Code\Common\OrbitScript.cs" Line="1" Column="1" />
-      <File FileName="Assets\Footo\Code\Grendel Scripts\UI\UIManager.cs" Line="24" Column="22" />
-      <File FileName="Assets\Footo\Code\Grendel Scripts\Game\GameManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Footo\Code\Grendel Scripts\Game\MainCamera.cs" Line="75" Column="87" />
+      <File FileName="Assets\Footo\Code\Common\MovableObject.cs" Line="169" Column="14" />
+      <File FileName="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\TriggerVolume.cs" Line="122" Column="19" />
+      <File FileName="Assets\Footo\Code\Grendel Scripts\Events\EventTransceiver.cs" Line="5" Column="14" />
+      <File FileName="Assets\Footo\Code\Grendel Scripts\Events\EventManager.cs" Line="34" Column="70" />
+      <File FileName="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\EditorObject.cs" Line="8" Column="14" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

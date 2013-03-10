@@ -52,9 +52,11 @@
      <Compile Include="Assets\Footo\Code\Common\Events\HealthUpdateEvent.cs" />
      <Compile Include="Assets\Footo\Code\Common\FootoEntity.cs" />
      <Compile Include="Assets\Footo\Code\Common\HealthUpdateType.cs" />
+     <Compile Include="Assets\Footo\Code\Common\Inventory.cs" />
      <Compile Include="Assets\Footo\Code\Common\ItemAttachPoint.cs" />
      <Compile Include="Assets\Footo\Code\Common\ItemClass.cs" />
      <Compile Include="Assets\Footo\Code\Common\LevelData.cs" />
+     <Compile Include="Assets\Footo\Code\Common\MovableObject.cs" />
      <Compile Include="Assets\Footo\Code\Common\NetworkCamera.cs" />
      <Compile Include="Assets\Footo\Code\Common\NetworkManager.cs" />
      <Compile Include="Assets\Footo\Code\Common\OrbitScript.cs" />
@@ -67,7 +69,6 @@
      <Compile Include="Assets\Footo\Code\CurrentPlayerList.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Audio\AudioList.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Audio\AudioManager.cs" />
-     <Compile Include="Assets\Footo\Code\Grendel Scripts\Editor02\GrendelEditorStyles.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\EventBase.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\EventManager.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\EventTransceiver.cs" />

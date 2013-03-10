@@ -395,6 +395,11 @@ public class FootoEntity : TNBehaviour
 //DEBUG
     private void DrawWeaponInfo()
     {
+        if (NetworkManager.Instance != null & TNManager.player != mOwner)
+        {
+            return;
+        }
+
         float kHeight = 64;
         float kWidth = 128;
 

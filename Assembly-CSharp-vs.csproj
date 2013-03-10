@@ -67,6 +67,7 @@
      <Compile Include="Assets\Footo\Code\CurrentPlayerList.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Audio\AudioList.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Audio\AudioManager.cs" />
+     <Compile Include="Assets\Footo\Code\Grendel Scripts\Editor02\GrendelEditorStyles.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\EventBase.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\EventManager.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\EventTransceiver.cs" />
@@ -79,6 +80,7 @@
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\IEditorObject.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\Spawner.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\TriggerObject.cs" />
+     <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\TriggerVolume.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\TriggerEventBase.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\TriggerEventEnter.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\TriggerEventExit.cs" />
@@ -96,6 +98,7 @@
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Game\LevelManager.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Game\MainCamera.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Game\MapCamera.cs" />
+     <Compile Include="Assets\Footo\Code\Grendel Scripts\Game\PlayerPreferences.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Game\ScreenFlash.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Game\SearchRadius.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Game\UserInput.cs" />

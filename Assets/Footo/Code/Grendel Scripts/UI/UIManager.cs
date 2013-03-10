@@ -3,6 +3,9 @@ using System.Collections;
 
 public class UIManager : Singleton<UIManager>
 {
+    [HideInInspector]public bool OverrideGamestate = false;
+
+    [HideInInspector]public GameManager.GameStates.STATES OverrideState = GameManager.GameStates.STATES.MAINMENU;
 
     private const int kPanelWidth = 256;
 
@@ -20,7 +23,9 @@ public class UIManager : Singleton<UIManager>
 	// Update is called once per frame
 	private void OnGUI()
     {
-        switch(GameManager.Instance.GameState)
+        GameManager.GameStates.STATES state = OverrideGamestate == true ? OverrideState : GameManager.Instance.GameState;
+
+        switch(state)
         {
             case GameManager.GameStates.STATES.LOADING:
 
@@ -109,6 +114,8 @@ public class UIManager : Singleton<UIManager>
                 if (GUI.changed)
                 {
                     AudioManager.Instance.UpdateAudio();
+                    PlayerPreferences.MusicVolume = AudioManager.Instance.GlobalVolumeMusic;
+                    PlayerPreferences.SFXVolume = AudioManager.Instance.GlobalVolumeSFX;
                     GUI.changed = false;
                 }
 

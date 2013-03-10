@@ -249,7 +249,7 @@ public class GameManager : Singleton<GameManager>
              
                  break;
              }
-                
+
          break;
          
          case GameStates.STATES.OPTIONS:

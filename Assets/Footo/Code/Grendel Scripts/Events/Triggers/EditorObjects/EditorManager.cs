@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections;
+
+using UnityEngine;
 
 public class EditorManager : MonoBehaviour 
 {
@@ -17,3 +18,4 @@ public class EditorManager : MonoBehaviour
 		
 	}
 }
+

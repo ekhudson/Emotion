@@ -1,6 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Footo\Code\Grendel Scripts\Game\GameManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Footo\Code\Grendel Scripts\UI\UIManager.cs">
     <Files>
       <File FileName="Assets\Footo\Code\Common\WeaponClass.cs" Line="1" Column="1" />
       <File FileName="Assets\Footo\Code\Common\FootoEntity.cs" Line="1" Column="1" />
@@ -10,9 +10,9 @@
       <File FileName="Assets\Footo\Code\Grendel Scripts\Game\MainCamera.cs" Line="1" Column="1" />
       <File FileName="Assets\TNet\Examples\Scripts\ExampleMenu.cs" Line="1" Column="1" />
       <File FileName="Assets\Footo\Code\Grendel Scripts\Utility\Console.cs" Line="1" Column="1" />
-      <File FileName="Assets\Footo\Code\Common\OrbitScript.cs" Line="23" Column="2" />
-      <File FileName="Assets\Footo\Code\Grendel Scripts\UI\UIManager.cs" Line="23" Column="3" />
-      <File FileName="Assets\Footo\Code\Grendel Scripts\Game\GameManager.cs" Line="36" Column="21" />
+      <File FileName="Assets\Footo\Code\Common\OrbitScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Footo\Code\Grendel Scripts\UI\UIManager.cs" Line="24" Column="22" />
+      <File FileName="Assets\Footo\Code\Grendel Scripts\Game\GameManager.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

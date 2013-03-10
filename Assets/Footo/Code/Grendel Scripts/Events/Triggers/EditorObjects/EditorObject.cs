@@ -1,48 +1,21 @@
-using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using UnityEngine;
+
 [System.Serializable]
-public class EditorObject : MonoBehaviour, IEditorObject
+public class EditorObject : BaseObject, IEditorObject
 {
-	public bool DebugMode = true;
-	[HideInInspector]public string Comment = "";
+	#region PUBLIC (STATIC)
+	public static EditorObject CurrentHoveredEditorObject;
+	#endregion
+	
+	#region PUBLIC
+	//public bool DebugMode = true;
 	public int NumberOfUses = -1; //-1 == infinite
 	
-	protected Transform _transform;
-	protected GameObject _gameObject;
-	//protected GUIStyle SelectedTextStyle = new GUIStyle();
-	protected int _labelWidth = 128;
-	//protected int _labelHeight = 32;
-	protected GameObject _currentActiveObject;
-	
-	[HideInInspector]
-	public bool LookingForSubject = false;
-	
-	public static EditorObject CurrentHoveredEditorObject;
-	
-	[HideInInspector]
-	public bool ActivateHighlight = false; //the highlight to show when in editor when this object is going to be activated by another	
-	[HideInInspector]
-	public bool DeactivateHighlight = false; //the highlight to show when in editor when this object is going to be deactivated by another
-	[HideInInspector]
-	public bool ToggleHighlight = false; //the highlight to show when in editor when this object is going to be toggled by another
-	[HideInInspector]
-	public bool HighlightHighlight = false; //the highlight to show when in editor when this object highlight via the info panel
-		
-	protected Camera _cameraToUse;
-	protected string _gizmoName = "";
-	protected bool _nameConflict = false; //used by the editor to flag this object if it has a name conflict with another object
-	protected EventTransceiver.Events[] _associatedEvents;
-	
-	private bool _clearConnections = false;
-	
-	[HideInInspector]
-	public Vector2 InfoScrollPos;
-	
-	[System.Serializable]
-	public enum EditorObjectMessage
+	[System.Serializable]public enum EditorObjectMessage
 	{
 		None,
 		Activate, //turn on the editor object
@@ -58,9 +31,42 @@ public class EditorObject : MonoBehaviour, IEditorObject
 		INACTIVE, //not running and awaiting activation
 		DISABLED //will not receive any messages from other editor objects
 	};
+	#endregion
 	
+	#region PUBLIC (HIDDEN)
+	[HideInInspector]public bool FirstEnable = true;
+	[HideInInspector]public bool[] OutgoingEventFilters;
+	[HideInInspector]public bool[] OutgoingMessageFilters;
+	[HideInInspector]public bool[] IncomingMessageFilters;	
+	[HideInInspector]public string Comment = "";
+	[HideInInspector]public bool LookingForSubject = false;
+	[HideInInspector]public bool ActivateHighlight = false; //the highlight to show when in editor when this object is going to be activated by another		
+	[HideInInspector]public bool DeactivateHighlight = false; //the highlight to show when in editor when this object is going to be deactivated by another	
+	[HideInInspector]public bool ToggleHighlight = false; //the highlight to show when in editor when this object is going to be toggled by another
+	[HideInInspector]public bool HighlightHighlight = false; //the highlight to show when in editor when this object highlight via the info panel
+	[HideInInspector]public Vector2 InfoScrollPos;
+	#endregion
+	
+	#region PROTECTED
+	//protected Transform _transform;
+	//protected GameObject _gameObject;	
+	protected int _labelWidth = 128;	
+	protected GameObject _currentActiveObject;		
+	protected Camera _cameraToUse;
+	protected string _gizmoName = "";
+	protected bool _nameConflict = false; //used by the editor to flag this object if it has a name conflict with another object
+	protected EventTransceiver.Events[] _associatedEvents;
 	protected EDITOROBJECTSTATES _state = EDITOROBJECTSTATES.INACTIVE;
+	#endregion
 	
+	#region PRIVATE
+	private bool _clearConnections = false;
+	private string[] _associatedEventsAsStrings;
+	//this is the registry that stores which editor objects this object is expecting to hear from
+	private Dictionary<EditorObject, EditorObject.EditorObjectMessage> _callerRegistry = new Dictionary<EditorObject, EditorObject.EditorObjectMessage>();
+	#endregion	
+		
+	#region ACCESSORS	
 	public EDITOROBJECTSTATES State
 	{
 		get {return _state;}
@@ -84,18 +90,37 @@ public class EditorObject : MonoBehaviour, IEditorObject
 		get {return null;}
 	}
 	
+	//returns the events associated with this objects as an array of string (for use in menus etc.)
+	virtual public string[] AssociatedEventsAsStrings
+	{
+		get
+		{ 
+			
+			if(_associatedEventsAsStrings == null || _associatedEventsAsStrings.Length <= 0)
+			{
+				_associatedEventsAsStrings = new string[AssociatedEvents.Length];
+				for(int i = 0; i < AssociatedEvents.Length; i++)
+				{
+					_associatedEventsAsStrings[i] = AssociatedEvents[i].ToString();
+				}
+			}
+			
+			return _associatedEventsAsStrings;	
+		}
+	}
+	
 	public EditorObject() : base()
 	{
 		_clearConnections = true;				
 	}
 	
-	virtual protected void Awake ()
+	protected override void Awake ()
 	{
 		
 	}
 	
 	// Use this for initialization
-	virtual protected void Start () 
+	protected override void Start () 
 	{
 	
 	}
@@ -110,24 +135,7 @@ public class EditorObject : MonoBehaviour, IEditorObject
 	{		
 		
 	}
-	
-//	public void DrawSimpleLabel(Camera cameraToUse)
-//	{		
-//		Vector3 distance = cameraToUse.transform.position - transform.position;	
-//		_cameraToUse = cameraToUse;
-//		
-//		SelectedTextStyle = GUI.skin.button;
-//		SelectedTextStyle.normal.textColor = Color.yellow;
-//		Vector2 screenCoords = cameraToUse.WorldToScreenPoint(transform.position);
-//		screenCoords.y = cameraToUse.pixelHeight - screenCoords.y;			
-//		
-//		Rect labelRect = new Rect(screenCoords.x - (_labelWidth * 0.5f), screenCoords.y - (_labelHeight * 0.5f), _labelWidth, _labelHeight);
-//	}
-		
-	public void LabelWindow(int windowID)
-	{		
-		//maybe put some kind of pop-up info here when the object is hovered over
-	}
+	#endregion
 	
 	virtual protected void OnDrawGizmos()
 	{		
@@ -172,37 +180,6 @@ public class EditorObject : MonoBehaviour, IEditorObject
 	{
 		
 	}
-	
-//	public void AcceptMessage(EditorObjectMessage message, EditorObject caller)
-//	{
-//		switch (message)
-//		{
-//			case EditorObjectMessage.Activate:
-//				OnActivate(caller);
-//			break;
-//			
-//			case EditorObjectMessage.Deactivate:
-//				OnDeactivate(caller);
-//			break;
-//			
-//			case EditorObjectMessage.Toggle:
-//				OnToggle(caller);
-//			break;
-//			
-//			case EditorObjectMessage.Disable:
-//				OnDisabled(caller);
-//			break;
-//			
-//			case EditorObjectMessage.Enable:
-//				OnEnabled(caller);
-//			break;
-//			
-//			default:
-//				Debug.LogWarning(string.Format("Message {0} from caller {1} to subject {2} unrecognized.",
-//								 message.ToString(), caller.name, this.name));
-//			break;			
-//		}
-//	}
 	
 	public void SetState(EDITOROBJECTSTATES state)
 	{
@@ -337,4 +314,35 @@ public class EditorObject : MonoBehaviour, IEditorObject
 			return false; //no uses left
 		}
 	}
+	
+	public void AddCaller(EditorObjectConnection connection)
+	{
+		if (_callerRegistry.ContainsKey(connection.Caller))
+		{
+			_callerRegistry[connection.Caller] = connection.Message;
+		}
+		else
+		{
+			_callerRegistry.Add(connection.Caller, connection.Message);
+		}
+	}
+	
+	public void RemoveCaller(EditorObject caller)
+	{
+		if (_callerRegistry.ContainsKey(caller))
+		{
+			_callerRegistry.Remove(caller);
+		}
+	}
+	
+	public bool WaitingForCallerAndMessage(EditorObject caller, EditorObject.EditorObjectMessage message)
+	{
+		if (_callerRegistry.ContainsKey(caller) && _callerRegistry[caller] == message)
+		{
+			return true;
+		}
+		
+		return false;		
+	}
 }//end class
+

@@ -5,7 +5,7 @@ using System.Collections;
 public class TriggerEventEnter : TriggerEventBase
 {
    	
-	public TriggerEventEnter(Collider collider)
+	public TriggerEventEnter(Object sender, Collider collider) : base(sender, collider)
 	{		
 		_collider = collider;
 	}

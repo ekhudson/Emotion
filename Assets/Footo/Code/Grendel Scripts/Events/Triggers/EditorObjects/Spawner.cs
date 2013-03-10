@@ -1,23 +1,36 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+
+using UnityEngine;
 
 [System.Serializable]
 public class Spawner : EditorObject, IEditorObject 
 {	
 	public List<GameObject> EntitiesToSpawn = new List<GameObject>();
+	[HideInInspector]public Color MyColor = Color.white;
+	
+	public override EventTransceiver.Events[] AssociatedEvents
+	{
+		get
+		{
+			if(_associatedEvents == null || _associatedEvents.Length <= 0)
+			{
+				_associatedEvents = new EventTransceiver.Events[]{ EventTransceiver.Events.TriggerEventEnter,
+									  							   EventTransceiver.Events.TriggerEventExit,
+								     					           EventTransceiver.Events.TriggerEventStay
+																 };
+			}
+			
+			return _associatedEvents;
+		}
+	}
 
 	// Use this for initialization
 	protected override void Start () 
 	{
 		base.Start();
 		
-	}
-			
-	public void OnHear(object sender, TriggerEventBase evt)
-	{
-		//Debug.Log("Hear Event " + evt.evt.ToString() + " with " + evt.GetCollider + evt.Place);
-	}
+	}		
 	
 	protected override void OnDrawGizmos()
 	{
@@ -31,6 +44,11 @@ public class Spawner : EditorObject, IEditorObject
 	public override void OnActivate(object caller, EventBase evt) //called when the editor object is activated
 	{		
 		base.OnActivate(caller, evt);
+		
+		if (!WaitingForCallerAndMessage(caller as EditorObject, EditorObject.EditorObjectMessage.Activate))
+		{
+			return;
+		}
 		
 		foreach(GameObject entityToSpawn in EntitiesToSpawn)
 		{
@@ -57,7 +75,5 @@ public class Spawner : EditorObject, IEditorObject
 	{
 		base.OnDisabled(caller, evt);
 	}
-	
-	
-	
 }
+

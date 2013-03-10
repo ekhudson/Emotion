@@ -4,7 +4,7 @@ using System.Collections;
 [System.Serializable]
 public class TriggerEventExit : TriggerEventBase
 {
-	public TriggerEventExit(Collider collider)
+	public TriggerEventExit(Object sender, Collider collider) : base (sender, collider)
 	{	
 		_collider = collider;
 	}	

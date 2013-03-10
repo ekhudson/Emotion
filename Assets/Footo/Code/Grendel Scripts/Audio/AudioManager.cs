@@ -31,7 +31,9 @@ public class AudioManager : Singleton<AudioManager>
 	// Use this for initialization
 	void Start () 
 	{		
-		Console.Instance.OutputToConsole(string.Format("AudioManager: Recognizing {0} Music Tracks and {1} Sound Effects.", AudioList.Instance.MusicTracks.Count, AudioList.Instance.SFX.Length), Console.Instance.Style_Admin);
+        GlobalVolumeSFX = PlayerPreferences.SFXVolume;
+        GlobalVolumeMusic = PlayerPreferences.MusicVolume;
+        Console.Instance.OutputToConsole(string.Format("AudioManager: Recognizing {0} Music Tracks and {1} Sound Effects.", AudioList.Instance.MusicTracks.Count, AudioList.Instance.SFX.Length), Console.Instance.Style_Admin);
 	}
 	
 	// Update is called once per frame
@@ -86,7 +88,7 @@ public class AudioManager : Singleton<AudioManager>
 		}
 		
 		source.clip = musicTrack;
-		source.volume = GlobalVolumeMusic;
+		source.volume = PlayerPreferences.MusicVolume;
         source.loop = true;
 		
 		try

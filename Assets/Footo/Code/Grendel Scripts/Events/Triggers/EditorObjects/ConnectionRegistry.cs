@@ -1,7 +1,8 @@
-using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
+using UnityEngine;
 
 [System.Serializable]
 public class ConnectionRegistry : Singleton<ConnectionRegistry>
@@ -13,6 +14,11 @@ public class ConnectionRegistry : Singleton<ConnectionRegistry>
 	protected override void Awake()
 	{		
 		base.Awake();		
+	}
+	
+	protected void Start()
+	{
+		BuildConnections();
 	}
 		
 	public void BuildConnections()
@@ -27,6 +33,8 @@ public class ConnectionRegistry : Singleton<ConnectionRegistry>
 		
 		foreach(EditorObjectConnection connection in _registry)
 		{			
+			connection.Subject.AddCaller(connection);
+			
 			switch(connection.Message)
 			{
 				
@@ -69,13 +77,62 @@ public class ConnectionRegistry : Singleton<ConnectionRegistry>
 		Console.Instance.OutputToConsole(string.Format("{0}: Connections established.",this.ToString()), Console.Instance.Style_Admin);
 	}
 	
+	public void RemoveBuiltConnections()
+	{
+		if (_registry.Count <= 0) { return; }
+		
+		Console.Instance.OutputToConsole(string.Format("{0}: Removing {1} connections that were built in the scene.",this.ToString(), _registry.Count), Console.Instance.Style_Admin);
+		
+		foreach(EditorObjectConnection connection in _registry)
+		{			
+			switch(connection.Message)
+			{
+				
+				case EditorObject.EditorObjectMessage.Activate:
+					
+					EventManager.Instance.RemoveHandler(EventTransceiver.LookupEvent(connection.OnEvent).GetType(), connection.Subject.OnActivate);
+					
+				break;
+					
+				case EditorObject.EditorObjectMessage.Deactivate:
+					
+					EventManager.Instance.RemoveHandler(EventTransceiver.LookupEvent(connection.OnEvent).GetType(), connection.Subject.OnDeactivate);
+					
+				break;
+					
+				case EditorObject.EditorObjectMessage.Toggle:
+					
+					EventManager.Instance.RemoveHandler(EventTransceiver.LookupEvent(connection.OnEvent).GetType(),connection.Subject.OnToggle);
+					
+				break;
+				
+				case EditorObject.EditorObjectMessage.Enable:
+					
+					EventManager.Instance.RemoveHandler(EventTransceiver.LookupEvent(connection.OnEvent).GetType(),connection.Subject.OnEnabled);
+					
+				break;
+				
+				case EditorObject.EditorObjectMessage.Disable:
+					
+					EventManager.Instance.RemoveHandler(EventTransceiver.LookupEvent(connection.OnEvent).GetType(),connection.Subject.OnDisabled);
+					
+				break;
+				
+				default:
+				
+				break;				
+			}
+		}
+	}
+	
 	public static ConnectionRegistry DesignInstance
 	{
 		get
 		{
 			if(_designInstance == null)
 			{
-				_designInstance = GameObject.Find("ConnectionRegistry").GetComponent<ConnectionRegistry>();
+				//_designInstance = GameObject.Find("ConnectionRegistry").GetComponent<ConnectionRegistry>();
+				_designInstance = (ConnectionRegistry)FindObjectOfType(typeof(ConnectionRegistry));
 			}
 			
 			return _designInstance;
@@ -117,7 +174,9 @@ public class ConnectionRegistry : Singleton<ConnectionRegistry>
 	
 	public void AddConnection(EditorObject subject, EditorObject caller, EditorObject.EditorObjectMessage message, EventTransceiver.Events onEvent)
 	{					
-		if (ContainsConnection(subject, caller) == null)
+		EditorObjectConnection connection = ContainsConnection(subject, caller);
+		
+		if (connection == null)
 		{
 		
 			EditorObjectConnection newConnection = EditorObjectConnection.CreateInstance<EditorObjectConnection>();
@@ -132,7 +191,8 @@ public class ConnectionRegistry : Singleton<ConnectionRegistry>
 		}
 		else
 		{
-			Debug.LogWarning(string.Format("Attempted to add a connection between {0} and {1}, but a connection already exists", subject.ToString(), caller.ToString()), this); 
+			Debug.LogWarning(string.Format("Attempted to add a connection between {0} and {1}, but a connection already exists. Setting new message instead.", subject.ToString(), caller.ToString()), this); 
+			connection.Message = message;
 		}
 	}
 	
@@ -157,4 +217,10 @@ public class ConnectionRegistry : Singleton<ConnectionRegistry>
             return x.Caller.name.CompareTo(y.Caller.name);
         }
     }
+	
+	private void OnDestroy()
+	{
+		RemoveBuiltConnections();
+	}
 }
+

@@ -1,6 +1,7 @@
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+
+using UnityEngine;
 
 public class EditorObjectManager : Singleton<EditorObjectManager> 
 {	
@@ -15,7 +16,8 @@ public class EditorObjectManager : Singleton<EditorObjectManager>
 	{
 		get
 		{
-			return GameObject.Find("GameManager").GetComponent<EditorObjectManager>();
+			//return GameObject.Find("GameManager").GetComponent<EditorObjectManager>();
+			return (EditorObjectManager)FindObjectOfType(typeof(EditorObjectManager));
 		}
 	}
 	
@@ -36,34 +38,5 @@ public class EditorObjectManager : Singleton<EditorObjectManager>
 		
 		return connectionExists;			
 	}
-	
-//	public void AddConnection(EditorObject subject, EditorObject caller, EditorObject.EditorObjectMessage message)
-//	{		
-//		EditorObjectConnection newConnection = new EditorObjectConnection(message, caller, subject);
-//				
-//		if (_connectionRegistry.ContainsKey(caller))
-//		{
-//			
-//			foreach(EditorObjectConnection connection in _connectionRegistry[caller])
-//			{
-//				if (connection.Subject == subject) //check if a connection already exists between these two objects
-//				{
-//					return;
-//				}
-//			}
-//			
-//			_connectionRegistry[caller].Add(newConnection);
-//		}
-//		else
-//		{			
-//			_connectionRegistry.Add(caller, new List<EditorObjectConnection>(){newConnection});		
-//		}
-//	}
-//	
-//	public void RemoveConnection(EditorObject subject, EditorObject caller)
-//	{
-//		
-//	}	
-	
-	
 }
+

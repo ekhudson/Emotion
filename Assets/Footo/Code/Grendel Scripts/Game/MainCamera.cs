@@ -73,6 +73,7 @@ public class MainCamera : Singleton<MainCamera>
 		Vector3 camtarget = localPlayerPos + (difVector * maxDist);
 
 		transform.position = Vector3.Lerp(transform.position, camtarget, CameraFollowSpeed) + CameraOffset;
+        transform.LookAt(localPlayerPos);
 
     }
 }//end class

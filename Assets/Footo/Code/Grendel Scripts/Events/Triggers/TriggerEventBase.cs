@@ -11,7 +11,7 @@ public class TriggerEventBase : EventBase
 		get { return _collider; }
 	}  
 
-    public TriggerEventBase(Collider collider)
+    public TriggerEventBase(Object sender, Collider collider) : base(collider.transform.position, sender)
     {   		
 		_collider = collider;
     }	

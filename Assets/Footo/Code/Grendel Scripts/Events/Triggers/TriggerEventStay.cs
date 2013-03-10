@@ -4,7 +4,7 @@ using System.Collections;
 [System.Serializable]
 public class TriggerEventStay : TriggerEventBase 
 {	
-	public TriggerEventStay(Collider collider)
+	public TriggerEventStay(Object sender, Collider collider) : base(sender, collider)
 	{		
 		_collider = collider;
 	}

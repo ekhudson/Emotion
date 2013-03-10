@@ -49,7 +49,7 @@ public class TriggerObject : EditorObject, IEditorObject
 			{
 				if (other != null)
 				{
-					EventManager.Instance.Post(this, new TriggerEventStay(other));
+					EventManager.Instance.Post(this, new TriggerEventStay(this, other));
 					continue;
 				}
 				else
@@ -71,14 +71,14 @@ public class TriggerObject : EditorObject, IEditorObject
 	
 	virtual public void OnTriggerEnter(Collider collider)
 	{		
-		EventManager.Instance.Post(this, new TriggerEventEnter(collider));
+		EventManager.Instance.Post(this, new TriggerEventEnter(this, collider));
 		
 		ObjectList.Add(collider);		
 	}
 	
 	virtual protected void OnTriggerExit(Collider collider)
 	{	
-		EventManager.Instance.Post(this, new TriggerEventExit(collider));		
+		EventManager.Instance.Post(this, new TriggerEventExit(this, collider));
 		
 		ObjectList.Remove(collider);
 	}

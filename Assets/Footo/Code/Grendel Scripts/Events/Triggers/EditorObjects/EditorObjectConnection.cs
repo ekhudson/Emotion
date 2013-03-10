@@ -1,6 +1,7 @@
-using UnityEngine;
 using System;
 using System.Collections;
+
+using UnityEngine;
 
 [System.Serializable]
 public class EditorObjectConnection : ScriptableObject
@@ -93,3 +94,4 @@ public class EditorObjectConnection : ScriptableObject
 		}		
 	}
 }
+

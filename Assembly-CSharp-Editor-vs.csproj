@@ -44,8 +44,29 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Footo\Code\Editor\CustomEditors\AudioManagerEditor.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\CustomEditors\ConnectionRegistryEditor.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\CustomEditors\ConsoleCommandEditor.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\CustomEditors\EditorObjectEditors\EditorObjectEditor.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\CustomEditors\EditorObjectEditors\EditorObjectManagerEditor.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\CustomEditors\EditorObjectEditors\SpawnerEditor.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\CustomEditors\EditorObjectEditors\TriggerEditor.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\CustomEditors\GrendelEditorBase.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\CustomEditors\LevelManagerEditor.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\CustomEditors\UIManagerEditor.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\EditorInput.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\GrendelEditor.cs" />
      <Compile Include="Assets\Footo\Code\Editor\LevelDataEditor.cs" />
      <Compile Include="Assets\Footo\Code\Editor\LevelEditorWindow.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\Preferences\GrendelEditorPreferences.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\Preferences\GrendelPrefencesWindow.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\UI\CustomEditorGUI.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\UI\GrendelToolbar.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\UI\GrendelToolbarButton.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\Utility\DrawConnectionLine.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\Utility\MoveObjectToGround.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\Utility\SetupDefaultObjects.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\Windows\GrendelAbout.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Editor\InvDatabaseInspector.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\InventorySystem\Editor\InvFindItem.cs" />
      <Compile Include="Assets\NGUI\Scripts\Editor\BMFontReader.cs" />

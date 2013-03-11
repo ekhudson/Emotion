@@ -56,6 +56,7 @@
      <Compile Include="Assets\Footo\Code\Common\ItemAttachPoint.cs" />
      <Compile Include="Assets\Footo\Code\Common\ItemClass.cs" />
      <Compile Include="Assets\Footo\Code\Common\LevelData.cs" />
+     <Compile Include="Assets\Footo\Code\Common\MouseAimer.cs" />
      <Compile Include="Assets\Footo\Code\Common\MovableObject.cs" />
      <Compile Include="Assets\Footo\Code\Common\NetworkCamera.cs" />
      <Compile Include="Assets\Footo\Code\Common\NetworkManager.cs" />
@@ -80,9 +81,9 @@
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\EditorObjectManager.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\IEditorObject.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\Spawner.cs" />
+     <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\TriggerEventBase.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\TriggerObject.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\TriggerVolume.cs" />
-     <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\TriggerEventBase.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\TriggerEventEnter.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\TriggerEventExit.cs" />
      <Compile Include="Assets\Footo\Code\Grendel Scripts\Events\Triggers\TriggerEventStay.cs" />

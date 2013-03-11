@@ -26,6 +26,7 @@ public class WeaponClass : ItemClass
 	private AudioSource mAudioSource;
 	private int mCurrentFirePosition = 0;
     private float mCurrentReloadTime = 0;
+    private MouseAimer mMouseAimer;
 	
 	public enum WEAPON_STATES
 	{
@@ -35,7 +36,7 @@ public class WeaponClass : ItemClass
 		RELOADING,
 	}	
 	
-	public WEAPON_STATES WeaponState;
+	[HideInInspector]public WEAPON_STATES WeaponState;
 	private float mCurrentCooldown;
 	private float mCurrentClipSize;
 	private float mCurrentFiringTime;
@@ -66,6 +67,7 @@ public class WeaponClass : ItemClass
 	{
 		mAudioSource = gameObject.GetComponent<AudioSource>();
         mAudioSource.volume = 1;
+        mMouseAimer = transform.parent.parent.GetComponent<MouseAimer>();
 	}
 	
 	public void StartFiring()
@@ -80,6 +82,11 @@ public class WeaponClass : ItemClass
 	
 	public void Update()
 	{
+        if (mMouseAimer != null)
+        {
+            transform.LookAt(mMouseAimer.HitPoint);
+        }
+
         if (WeaponState == WEAPON_STATES.RELOADING)
         {
             mCurrentReloadTime += Time.deltaTime;
@@ -131,7 +138,12 @@ public class WeaponClass : ItemClass
 
     public void ReloadWeapon()
     {
-       StartCoroutine("Reload");
+        if (CurrentClipSize == ClipSize || WeaponState == WEAPON_STATES.RELOADING)
+        {
+            return;
+        }
+
+        StartCoroutine("Reload");
     }
 
     void PlaySound(AdjustableAudioClip[] clipArray)
@@ -167,6 +179,7 @@ public class WeaponClass : ItemClass
 	{
 		WeaponState = WEAPON_STATES.RELOADING;
         mCurrentReloadTime = 0;
+        mCurrentFiringTime = 0;
         PlaySound(ReloadSounds);
 
         yield return new WaitForSeconds(ReloadTimeInSeconds);

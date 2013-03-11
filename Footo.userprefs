@@ -1,6 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Footo\Code\Common\MovableObject.cs">
+    <Files>
+      <File FileName="Assets\Footo\Code\Common\MovableObject.cs" Line="98" Column="20" />
+      <File FileName="Assets\Footo\Code\Editor\CustomEditors\MoveableObjectEditor.cs" Line="27" Column="82" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

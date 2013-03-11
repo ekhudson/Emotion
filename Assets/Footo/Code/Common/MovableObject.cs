@@ -4,177 +4,121 @@ using System.Collections.Generic;
 
 public class MovableObject : MonoBehaviour
 {
-    public Vector3 OffPosition;
-    public Vector3 OnPosition;
-    public bool StartOff = true;
-
-    public float StartDelay;
+    [System.Serializable]
+    public class MoveableObjectPosition
+    {
+        public Vector3 Position;
+        public Quaternion Rotation;
+    }
     public float MoveSpeed = 1f;
-    public bool PingPong = false;
-    public float PingPongDelay = 0f;
 
-    public List<EditorObject> AcceptEventsFromObjects = new List<EditorObject>();
-    public EventTransceiver.Events[] ActivateOnEvents;
-    public EventTransceiver.Events[] DeactivateOnEvents;
+    [HideInInspector]public List<MoveableObjectPosition> Positions = new List<MoveableObjectPosition>();
+
+    private float mPingPongDelay = 0f;
+    private bool mLooping = false;
+
+    private bool mInterruptable = true;
+
+    private int mTargetPosition;
+    private int mPreviousPosition;
 
     private Vector3 mMoveDirection = Vector3.zero;
     private Vector3 mOriginalPosition = Vector3.zero;
+    private Vector3 mOriginalSize = Vector3.zero; //used for drawing the future position
 
-    public enum MovableObjectStates
+    private const float kMinimumStopDistance = 0.1f;
+
+    public enum MoveableObjectStates
     {
-        ON,
-        MOVING_TO_OFF,
-        MOVING_TO_ON,
-        OFF,
+        IDLE,
+        MOVING,
+        PINGPONG,
     }
 
-    public MovableObjectStates State;
+    public MoveableObjectStates State;
+
+    public bool IsInterruptable
+    {
+        get
+        {
+            return mInterruptable;
+        }
+    }
+
+    public Vector3 OriginalPosition
+    {
+        get
+        {
+            return mOriginalPosition;
+        }
+    }
 
 	// Use this for initialization
 	private void Start ()
     {
         mOriginalPosition = transform.position;
-
-        if (StartOff)
-        {
-            State = MovableObjectStates.OFF;
-            transform.position = mOriginalPosition + OffPosition;
-        }
-        else
-        {
-            State = MovableObjectStates.ON;
-            transform.position = mOriginalPosition + OnPosition;
-        }
-
-        foreach(EventTransceiver.Events evt in ActivateOnEvents)
-        {
-            EventManager.Instance.AddHandler(EventTransceiver.LookupEvent(evt).GetType(), Activate);
-        }
-
-        foreach(EventTransceiver.Events evt in DeactivateOnEvents)
-        {
-            EventManager.Instance.AddHandler(EventTransceiver.LookupEvent(evt).GetType(), Deactivate);
-        }
+        mOriginalSize = renderer.bounds.size;
 	}
 
     private void Update()
     {
         switch(State)
         {
-            case MovableObjectStates.ON:
+            case MoveableObjectStates.IDLE:
 
             break;
 
-            case MovableObjectStates.MOVING_TO_OFF:
+            case MoveableObjectStates.MOVING:
 
-                transform.position = Vector3.Lerp(transform.position, mOriginalPosition + OffPosition, MoveSpeed * Time.deltaTime);
+                transform.position = Vector3.Lerp(transform.position, mOriginalPosition + Positions[mTargetPosition].Position, MoveSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Positions[mTargetPosition].Rotation, MoveSpeed * Time.deltaTime);
 
-                if (transform.position == transform.position + OffPosition)
+                if (transform.position == (mOriginalPosition + Positions[mTargetPosition].Position))
                 {
-                    State = MovableObjectStates.MOVING_TO_OFF;
+                    State = MoveableObjectStates.IDLE;
                 }
 
             break;
 
-            case MovableObjectStates.MOVING_TO_ON:
-
-                transform.position = Vector3.Lerp(transform.position, mOriginalPosition + OnPosition, MoveSpeed * Time.deltaTime);
-
-                if (transform.position == transform.position + OnPosition)
-                {
-                    State = MovableObjectStates.MOVING_TO_ON;
-                }
-
-            break;
-
-            case MovableObjectStates.OFF:
+            case MoveableObjectStates.PINGPONG:
 
             break;
         }
     }
 
-    private void Activate(object sender, EventBase evt)
+    public void MoveToPosition(int position)
     {
-
-        if (!AcceptEventsFromObjects.Contains(evt.Sender as EditorObject))
-        {
-            return;
-        }
-
-        if (StartOff)
-        {
-
-            if (State == MovableObjectStates.OFF || State == MovableObjectStates.MOVING_TO_OFF)
-            {
-                State = MovableObjectStates.MOVING_TO_ON;
-                mMoveDirection = (OnPosition - OffPosition).normalized;
-            }
-        }
-        else
-        {
-            if (State == MovableObjectStates.ON || State == MovableObjectStates.MOVING_TO_ON)
-            {
-                State = MovableObjectStates.MOVING_TO_OFF;
-                mMoveDirection = (OffPosition - OnPosition).normalized;
-            }
-        }
+        MoveToPosition(position, true);
     }
 
-    private void Deactivate(object sender, EventBase evt)
+    public void MoveToPosition(int position, bool interruptable)
     {
-        if (!AcceptEventsFromObjects.Contains(evt.Sender as EditorObject))
+        if (State == MoveableObjectStates.MOVING && !mInterruptable)
         {
             return;
         }
 
-        if (StartOff)
-        {
-
-            if (State == MovableObjectStates.ON || State == MovableObjectStates.MOVING_TO_ON)
-            {
-                State = MovableObjectStates.MOVING_TO_OFF;
-                mMoveDirection = (OffPosition - OnPosition).normalized;
-            }
-        }
-        else
-        {
-            if (State == MovableObjectStates.OFF || State == MovableObjectStates.MOVING_TO_OFF)
-            {
-                State = MovableObjectStates.MOVING_TO_ON;
-                mMoveDirection = (OnPosition - OffPosition).normalized;
-            }
-        }
+        mInterruptable = interruptable;
+        mTargetPosition = position;
+        State = MoveableObjectStates.MOVING;
     }
 
     private void OnDrawGizmosSelected()
     {
-        Vector3 offPos;
-        Vector3 onPos;
-        Vector3 pos = Application.isPlaying == true ? mOriginalPosition : transform.position;
-
-        if (StartOff)
+        if (Positions == null || Positions.Count <= 0)
         {
-            if (OffPosition == null)
-            {
-                offPos = pos + OffPosition;
-                onPos = pos + new Vector3(0,renderer.bounds.size.y,0);
-            }
-        }
-        else
-        {
-            if (OnPosition == null)
-            {
-                onPos = pos;
-                offPos = pos - new Vector3(0,renderer.bounds.size.y,0);
-            }
+            return;
         }
 
-        Gizmos.color = Color.red;
+        if (Application.isEditor && !Application.isPlaying)
+        {
+            mOriginalPosition = transform.position;
+            mOriginalSize = renderer.bounds.size;
+        }
 
-        Gizmos.DrawWireCube(pos + OffPosition, renderer.bounds.size);
-
-        Gizmos.color = Color.green;
-
-        Gizmos.DrawWireCube(pos + OnPosition, renderer.bounds.size);
+        foreach(MoveableObjectPosition position in Positions)
+        {
+            Gizmos.DrawWireCube(mOriginalPosition + position.Position, position.Rotation * mOriginalSize);
+        }
     }
 }

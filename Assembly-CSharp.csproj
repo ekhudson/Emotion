@@ -58,6 +58,7 @@
      <Compile Include="Assets\Footo\Code\Common\LevelData.cs" />
      <Compile Include="Assets\Footo\Code\Common\MouseAimer.cs" />
      <Compile Include="Assets\Footo\Code\Common\MovableObject.cs" />
+     <Compile Include="Assets\Footo\Code\Common\MovableObjectController.cs" />
      <Compile Include="Assets\Footo\Code\Common\NetworkManager.cs" />
      <Compile Include="Assets\Footo\Code\Common\OrbitScript.cs" />
      <Compile Include="Assets\Footo\Code\Common\ProjectileClass.cs" />

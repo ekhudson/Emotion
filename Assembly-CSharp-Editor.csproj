@@ -53,7 +53,7 @@
      <Compile Include="Assets\Footo\Code\Editor\CustomEditors\EditorObjectEditors\TriggerEditor.cs" />
      <Compile Include="Assets\Footo\Code\Editor\CustomEditors\GrendelEditorBase.cs" />
      <Compile Include="Assets\Footo\Code\Editor\CustomEditors\LevelManagerEditor.cs" />
-     <Compile Include="Assets\Footo\Code\Editor\CustomEditors\MoveableObjectEditor.cs" />
+     <Compile Include="Assets\Footo\Code\Editor\CustomEditors\MovableObjectEditor.cs" />
      <Compile Include="Assets\Footo\Code\Editor\CustomEditors\UIManagerEditor.cs" />
      <Compile Include="Assets\Footo\Code\Editor\EditorInput.cs" />
      <Compile Include="Assets\Footo\Code\Editor\GrendelEditor.cs" />

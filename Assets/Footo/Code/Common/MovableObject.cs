@@ -4,19 +4,8 @@ using System.Collections.Generic;
 
 public class MovableObject : MonoBehaviour
 {
-    [System.Serializable]
-    public class MoveableObjectPosition
-    {
-        public Vector3 Position;
-        public Quaternion Rotation;
-    }
-    public float MoveSpeed = 1f;
 
-    public int StartPosition = 0;
-    [HideInInspector]public List<MoveableObjectPosition> Positions = new List<MoveableObjectPosition>();
-
-    private float mPingPongDelay = 0f;
-    private bool mLooping = false;
+    //public float MoveSpeed = 1f;
 
     private bool mInterruptable = true;
 
@@ -25,18 +14,39 @@ public class MovableObject : MonoBehaviour
     private int mCurrentPosition;
 
     private Vector3 mMoveDirection = Vector3.zero;
+    private float mMoveSpeed = 1f;
     private Vector3 mOriginalPosition = Vector3.zero;
     private Vector3 mOriginalSize = Vector3.zero; //used for drawing the future position
     private Quaternion mOriginalRotation = Quaternion.identity; //used for drawing hte future positions
     private float mCurrentMoveTime = 0f;
+    private List<MovableObjectController.MovableObjectPosition> mPositionQueue = new List<MovableObjectController.MovableObjectPosition>();
+
+    private float mOriginalMagnitude;
+    private int mIterateDirection = 1;
 
     private const float kMinimumStopDistance = 0.01f;
+
+    public enum LoopModes
+    {
+        NONE,
+        PINGPONG,
+        WRAP,
+    }
+
+    private LoopModes mLoopMode;
+
+    public enum MoveModes
+    {
+        LINEAR,
+        LERP,
+    }
+
+    private MoveModes mMoveMode;
 
     public enum MoveableObjectStates
     {
         IDLE,
         MOVING,
-        PINGPONG,
     }
 
     public MoveableObjectStates State;
@@ -57,11 +67,34 @@ public class MovableObject : MonoBehaviour
         }
     }
 
-    public int CurrentPositionIndex
+    public Quaternion OriginalRotation
     {
         get
         {
-            return mCurrentPosition;
+            return mOriginalRotation;
+        }
+    }
+
+    public Vector3 OriginalSize
+    {
+        get
+        {
+            return mOriginalSize;
+        }
+    }
+
+    public MovableObjectController.MovableObjectPosition CurrentTargetPosition
+    {
+        get
+        {
+            if (mPositionQueue.Count <= 0 || mTargetPosition < 0)
+            {
+                return null;
+            }
+            else
+            {
+                return mPositionQueue[mTargetPosition];
+            }
         }
     }
 
@@ -71,7 +104,6 @@ public class MovableObject : MonoBehaviour
         mOriginalPosition = transform.position;
         mOriginalSize = renderer.bounds.size;
         mOriginalRotation = transform.rotation;
-        mCurrentPosition = StartPosition;
 	}
 
     private void Update()
@@ -84,65 +116,132 @@ public class MovableObject : MonoBehaviour
 
             case MoveableObjectStates.MOVING:
 
-                transform.position = Vector3.Lerp(transform.position, mOriginalPosition + Positions[mTargetPosition].Position, MoveSpeed * Time.deltaTime);
-                transform.rotation = Quaternion.Lerp(transform.rotation, Positions[mTargetPosition].Rotation, MoveSpeed * Time.deltaTime);
-
-                if ( ((mOriginalPosition + Positions[mTargetPosition].Position) - transform.position).magnitude < kMinimumStopDistance)
+                if (mMoveMode == MoveModes.LERP)
                 {
-                    mCurrentMoveTime = 0;
-                    mCurrentPosition = mTargetPosition;
-                    mTargetPosition = -1;
-                    State = MoveableObjectStates.IDLE;
-                    return;
+                    transform.position = Vector3.Lerp(transform.position, mOriginalPosition + mPositionQueue[mTargetPosition].Position, mMoveSpeed * Time.deltaTime);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, mPositionQueue[mTargetPosition].Rotation, mMoveSpeed * Time.deltaTime);
+                }
+                else if (mMoveMode == MoveModes.LINEAR)
+                {
+                    transform.position += (mMoveDirection * (mMoveSpeed * Time.deltaTime));
+                    transform.rotation = Quaternion.Lerp(transform.rotation, mPositionQueue[mTargetPosition].Rotation, (1 - ((mOriginalPosition + mPositionQueue[mTargetPosition].Position) - transform.position).magnitude / mOriginalMagnitude));
+                }
+
+                if ( ((mOriginalPosition + mPositionQueue[mTargetPosition].Position) - transform.position).magnitude < kMinimumStopDistance)
+                {
+                    transform.position = mOriginalPosition + mPositionQueue[mTargetPosition].Position;
+                    transform.rotation = mPositionQueue[mTargetPosition].Rotation;
+
+                    mTargetPosition += mIterateDirection;
+
+                    if (mTargetPosition >= mPositionQueue.Count || mTargetPosition < 0)
+                    {
+                        mCurrentMoveTime = 0;
+                        mCurrentPosition = mTargetPosition;
+
+                        if (mLoopMode == LoopModes.NONE)
+                        {
+                            mTargetPosition = -1;
+                            State = MoveableObjectStates.IDLE;
+                            return;
+                        }
+                        else if (mLoopMode == LoopModes.WRAP)
+                        {
+                            mTargetPosition = mTargetPosition < 0 ? mPositionQueue.Count - 1 : 0;
+                        }
+                        else if (mLoopMode == LoopModes.PINGPONG)
+                        {
+                            mIterateDirection *= -1;
+                            mTargetPosition += mIterateDirection;
+                        }
+                    }
+
+                    mMoveDirection = ((mOriginalPosition + mPositionQueue[mTargetPosition].Position) - transform.position);
+                    mOriginalMagnitude = mMoveDirection.magnitude;
+                    mMoveDirection = mMoveDirection.normalized;
                 }
 
                 mCurrentMoveTime += Time.deltaTime;
 
             break;
-
-            case MoveableObjectStates.PINGPONG:
-
-            break;
         }
     }
 
-    public void MoveToPosition(int position)
-    {
-        MoveToPosition(position, true);
-    }
-
-    public void MoveToPosition(int position, bool interruptable)
+    public void GivePath(List<MovableObjectController.MovableObjectPosition> positions, float speed, bool interruptable, MoveModes moveMode, LoopModes loopMode)
     {
         if (State == MoveableObjectStates.MOVING && !mInterruptable)
         {
             return;
         }
 
+        mPositionQueue.Clear();
+        mPositionQueue = positions;
+        mMoveSpeed = speed;
+        mMoveMode = moveMode;
+        mLoopMode = loopMode;
+
+        mMoveDirection = ((mOriginalPosition + mPositionQueue[0].Position) - transform.position);
+        mOriginalMagnitude = mMoveDirection.magnitude;
+        mMoveDirection = mMoveDirection.normalized;
+
         mCurrentMoveTime = 0f;
         mInterruptable = interruptable;
         mPreviousPosition = mCurrentPosition;
         mCurrentPosition = -1;
-        mTargetPosition = position;
+        mTargetPosition = 0;
+        State = MoveableObjectStates.MOVING;
+    }
+
+    /// <summary>
+    /// Move Object directly to position.
+    /// </summary>
+    /// <param name='position'>
+    /// Position.
+    /// </param>
+    public void MoveToPosition(MovableObjectController.MovableObjectPosition position, float speed)
+    {
+        MoveToPosition(position, speed, true);
+    }
+
+    /// <summary>
+    /// Move Object directly to position.
+    /// </summary>
+    /// <param name='position'>
+    /// Position.
+    /// </param>
+    /// <param name='interruptable'>
+    /// Interruptable.
+    /// </param>
+    public void MoveToPosition(MovableObjectController.MovableObjectPosition position, float speed, bool interruptable)
+    {
+        if (State == MoveableObjectStates.MOVING && !mInterruptable)
+        {
+            return;
+        }
+
+        mPositionQueue.Clear();
+        mPositionQueue.Add(position);
+        mMoveSpeed = speed;
+        mCurrentMoveTime = 0f;
+        mInterruptable = interruptable;
+        mPreviousPosition = mCurrentPosition;
+        mCurrentPosition = -1;
+        mTargetPosition = 0;
         State = MoveableObjectStates.MOVING;
     }
 
     private void OnDrawGizmosSelected()
     {
-        if (Positions == null || Positions.Count <= 0)
-        {
-            return;
-        }
+//        if (Application.isEditor && !Application.isPlaying)
+//        {
+//            mOriginalPosition = transform.position;
+//            mOriginalSize = renderer.bounds.size;
+//            mOriginalRotation = transform.rotation;
+//        }
 
-        if (Application.isEditor && !Application.isPlaying)
-        {
-            mOriginalPosition = transform.position;
-            mOriginalSize = renderer.bounds.size;
-            mOriginalRotation = transform.rotation;
-        }
-
-        foreach(MoveableObjectPosition position in Positions)
-        {
-            Gizmos.DrawWireCube(mOriginalPosition + position.Position, position.Rotation * (mOriginalRotation * mOriginalSize));
-        }
+//        foreach(MoveableObjectPosition position in Positions)
+//        {
+//            Gizmos.DrawWireCube(mOriginalPosition + position.Position, position.Rotation * (mOriginalRotation * mOriginalSize));
+//        }
     }
 }

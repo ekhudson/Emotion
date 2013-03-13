@@ -9,15 +9,26 @@ public class MovableObjectController : MonoBehaviour
     {
         public EventTransceiver.Events OnEvent;
         public MonoBehaviour FromObject;
-        public MovableObject TargetObject;
-        public List<int> Positions = new List<int>();
-        public int IterateAmount;
-        public bool StateWrapMode = false;
-        public bool Interruptable = true;
-        [HideInInspector]public int CurrentPositionIndex = 0;
     }
 
+    [System.Serializable]
+    public class MovableObjectPosition
+    {
+        public Vector3 Position;
+        public Quaternion Rotation;
+    }
+
+    public MovableObject TargetObject;
     public List<MovableObjectEvent> MovableObjectEvents = new List<MovableObjectEvent>();
+    public float MoveSpeed;
+    [HideInInspector]public List<MovableObjectPosition> Positions = new List<MovableObjectPosition>();
+    public bool Interruptable = true;
+    public MovableObject.MoveModes MoveMode;
+    public MovableObject.LoopModes LoopMode;
+
+    private Vector3 mTargetOriginalPosition = Vector3.zero;
+    private Vector3 mTargetOriginalSize = Vector3.zero;
+    private Quaternion mTargetOriginalRotation = Quaternion.identity;
 
     private Dictionary<System.Type, List<MovableObjectEvent>> mEventDictionary = new Dictionary<System.Type, List<MovableObjectEvent>>();
 
@@ -52,16 +63,22 @@ public class MovableObjectController : MonoBehaviour
                 continue;
             }
 
+            TargetObject.GivePath(new List<MovableObjectPosition>(Positions), MoveSpeed, Interruptable, MoveMode, LoopMode);
+        }
+    }
 
+    private void OnDrawGizmosSelected()
+    {
+        if (Application.isEditor && !Application.isPlaying)
+        {
+            mTargetOriginalPosition = TargetObject.transform.position;
+            mTargetOriginalSize = TargetObject.gameObject.renderer.bounds.size;
+            mTargetOriginalRotation = TargetObject.transform.rotation;
+        }
 
-//            if (movEvt.TargetObject.CurrentPositionIndex == movEvt.FromPosition)
-//            {
-//                movEvt.TargetObject.MoveToPosition(movEvt.ToPosition, movEvt.Interruptable);
-//            }
-//            else
-//            {
-//                movEvt.TargetObject.MoveToPosition(movEvt.FromPosition, movEvt.Interruptable);
-//            }
+        foreach(MovableObjectPosition position in Positions)
+        {
+            Gizmos.DrawWireCube(mTargetOriginalPosition + position.Position, position.Rotation * (mTargetOriginalRotation * mTargetOriginalSize));
         }
     }
 

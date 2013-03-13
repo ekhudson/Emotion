@@ -71,6 +71,12 @@ public class UICamera : MonoBehaviour
 	}
 
 	/// <summary>
+	/// If 'true', currently hovered object will be shown in the top left corner.
+	/// </summary>
+
+	public bool debug = false;
+
+	/// <summary>
 	/// Whether the mouse input is used.
 	/// </summary>
 
@@ -498,7 +504,7 @@ public class UICamera : MonoBehaviour
 	{
 		UIPanel panel = NGUITools.FindInParents<UIPanel>(hit.collider.gameObject);
 
-		if (panel == null || panel.clipping == UIDrawCall.Clipping.None || panel.IsVisible(hit.point))
+		if (panel == null || panel.IsVisible(hit.point))
 		{
 			return true;
 		}
@@ -683,8 +689,12 @@ public class UICamera : MonoBehaviour
 		{
 			useMouse = false;
 			useTouch = true;
-			useKeyboard = false;
-			useController = false;
+
+			if (Application.platform == RuntimePlatform.IPhonePlayer)
+			{
+				useKeyboard = false;
+				useController = false;
+			}
 		}
 		else if (Application.platform == RuntimePlatform.PS3 ||
 				 Application.platform == RuntimePlatform.XBOX360)
@@ -777,7 +787,7 @@ public class UICamera : MonoBehaviour
 		else inputHasFocus = false;
 
 		// Update the keyboard and joystick events
-		if (!inputHasFocus && mSel != null) ProcessOthers();
+		if (mSel != null) ProcessOthers();
 
 		// If it's time to show a tooltip, inform the object we're hovering over
 		if (useMouse && mHover != null)
@@ -1025,7 +1035,7 @@ public class UICamera : MonoBehaviour
 		// Whether we're using the mouse
 		bool isMouse = (currentTouch == mMouse[0]);
 		float drag   = isMouse ? mouseDragThreshold : touchDragThreshold;
-		float click  = isMouse ? mouseClickThreshold : Mathf.Max(touchClickThreshold, Screen.height * 0.1f);
+		float click  = isMouse ? mouseClickThreshold : touchClickThreshold;
 
 		// Send out the press message
 		if (pressed)
@@ -1164,4 +1174,14 @@ public class UICamera : MonoBehaviour
 		Notify(mTooltip, "OnTooltip", val);
 		if (!val) mTooltip = null;
 	}
+
+#if UNITY_EDITOR
+	void OnGUI ()
+	{
+		if (debug && lastHit.collider != null)
+		{
+			GUILayout.Label("Last Hit: " + NGUITools.GetHierarchy(lastHit.collider.gameObject).Replace("\"", ""));
+		}
+	}
+#endif
 }

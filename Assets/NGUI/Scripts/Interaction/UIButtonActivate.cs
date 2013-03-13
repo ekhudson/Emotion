@@ -15,8 +15,5 @@ public class UIButtonActivate : MonoBehaviour
     public GameObject target;
     public bool state = true;
 
-    void OnClick () 
-	{ if (target != null) 
-		NGUITools.SetActive(target, state); 
-	}
+    void OnClick () { if (target != null) NGUITools.SetActive(target, state); }
 }

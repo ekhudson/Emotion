@@ -1,6 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\TNet\Client\TNTools.cs">
+    <Files>
+      <File FileName="Assets\Footo\Code\Common\MovableObject.cs" Line="1" Column="1" />
+      <File FileName="Assets\Footo\Code\Editor\CustomEditors\MoveableObjectEditor.cs" Line="1" Column="1" />
+      <File FileName="Assets\Footo\Code\Common\MovableObjectController.cs" Line="34" Column="1" />
+      <File FileName="Assets\Footo\Code\Grendel Scripts\Events\EventManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Footo\Code\Grendel Scripts\Events\Triggers\EditorObjects\TriggerVolume.cs" Line="1" Column="1" />
+      <File FileName="Assets\TNet\Client\TNTools.cs" Line="45" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

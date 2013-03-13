@@ -9,8 +9,6 @@ using UnityEditor;
 [CustomEditor(typeof(UISlider))]
 public class UISliderInspector : Editor
 {
-	bool mShowWarning = false;
-
 	void ValidatePivot (Transform fg, string name, UISlider.Direction dir)
 	{
 		if (fg != null)
@@ -70,29 +68,6 @@ public class UISliderInspector : Editor
 
 		NGUIEditorTools.DrawSeparator();
 
-		Vector2 size = slider.fullSize;
-
-		GUILayout.Label(" Size");
-		GUILayout.Space(-36f);
-		GUILayout.BeginHorizontal();
-		GUILayout.Space(66f);
-		size = EditorGUILayout.Vector2Field("", size);
-		GUILayout.Space(18f);
-		GUILayout.EndHorizontal();
-
-		if (mShowWarning && slider.foreground != null)
-		{
-			UIWidget widget = slider.foreground.GetComponent<UIWidget>();
-
-			if (widget != null && !(widget is UIFilledSprite))
-			{
-				GUI.color = new Color(1f, 0.7f, 0f);
-				GUILayout.Label("Don't forget to adjust the background as well");
-				GUILayout.Label("(the slider doesn't know what it is)");
-				GUI.color = Color.white;
-			}
-		}
-
 		Transform fg = EditorGUILayout.ObjectField("Foreground", slider.foreground, typeof(Transform), true) as Transform;
 		Transform tb = EditorGUILayout.ObjectField("Thumb", slider.thumb, typeof(Transform), true) as Transform;
 		UISlider.Direction dir = (UISlider.Direction)EditorGUILayout.EnumPopup("Direction", slider.direction);
@@ -112,17 +87,13 @@ public class UISliderInspector : Editor
 		if (slider.foreground != fg ||
 			slider.thumb != tb ||
 			slider.direction != dir ||
-			slider.fullSize != size ||
 			slider.eventReceiver != er ||
 			slider.functionName != fn)
 		{
-			if (slider.fullSize != size) mShowWarning = true;
-
 			NGUIEditorTools.RegisterUndo("Slider Change", slider);
 			slider.foreground = fg;
 			slider.thumb = tb;
 			slider.direction = dir;
-			slider.fullSize = size;
 			slider.eventReceiver = er;
 			slider.functionName = fn;
 

@@ -37,10 +37,10 @@
     <Reference Include="System.XML" />
 	<Reference Include="System.Core" />
 	<Reference Include="UnityEngine">
-	  <HintPath>E:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity_4.0.1/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>E:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity_4.0.1/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
@@ -138,7 +138,6 @@
      <Compile Include="Assets\NGUI\Examples\Scripts\Other\DownloadTexture.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\Other\DragDropContainer.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\Other\DragDropItem.cs" />
-     <Compile Include="Assets\NGUI\Examples\Scripts\Other\DragDropRoot.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\Other\DragDropSurface.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\Other\LagPosition.cs" />
      <Compile Include="Assets\NGUI\Examples\Scripts\Other\LagRotation.cs" />
@@ -207,6 +206,8 @@
      <Compile Include="Assets\NGUI\Scripts\Internal\UINode.cs" />
      <Compile Include="Assets\NGUI\Scripts\Internal\UIWidget.cs" />
      <Compile Include="Assets\NGUI\Scripts\Internal\UpdateManager.cs" />
+     <Compile Include="Assets\NGUI\Scripts\Tweening\AnimatedAlpha.cs" />
+     <Compile Include="Assets\NGUI\Scripts\Tweening\AnimatedColor.cs" />
      <Compile Include="Assets\NGUI\Scripts\Tweening\SpringPosition.cs" />
      <Compile Include="Assets\NGUI\Scripts\Tweening\TweenAlpha.cs" />
      <Compile Include="Assets\NGUI\Scripts\Tweening\TweenColor.cs" />

@@ -1,4 +1,4 @@
-﻿//----------------------------------------------
+//----------------------------------------------
 //            NGUI: Next-Gen UI kit
 // Copyright © 2011-2012 Tasharen Entertainment
 //----------------------------------------------
@@ -46,6 +46,12 @@ public abstract class UIWidget : MonoBehaviour
 	UIGeometry mGeom = new UIGeometry();
 
 	/// <summary>
+	/// Whether the widget is visible.
+	/// </summary>
+
+	public bool isVisible { get { return finalAlpha > 0.001f; } }
+
+	/// <summary>
 	/// Color used by the widget.
 	/// </summary>
 
@@ -56,6 +62,12 @@ public abstract class UIWidget : MonoBehaviour
 	/// </summary>
 
 	public float alpha { get { return mColor.a; } set { Color c = mColor; c.a = value; color = c; } }
+
+	/// <summary>
+	/// Widget's final alpha, after taking the panel's alpha into account.
+	/// </summary>
+
+	public float finalAlpha { get { if (mPanel == null) CreatePanel(); return (mPanel != null) ? mColor.a * mPanel.alpha : mColor.a; } }
 
 	/// <summary>
 	/// Set or get the value that specifies where the widget's pivot point should be.
@@ -177,6 +189,13 @@ public abstract class UIWidget : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Only sets the local flag, does not notify the panel.
+	/// In most cases you will want to use MarkAsChanged() instead.
+	/// </summary>
+
+	public void MarkAsChangedLite () { mChanged = true; }
+
+	/// <summary>
 	/// Tell the panel responsible for the widget that something has changed and the buffers need to be rebuilt.
 	/// </summary>
 
@@ -230,10 +249,17 @@ public abstract class UIWidget : MonoBehaviour
 	}
 
 	/// <summary>
+	/// For backwards compatibility. Use ParentHasChanged() instead.
+	/// </summary>
+
+	[System.Obsolete("Use ParentHasChanged() instead")]
+	public void CheckParent () { ParentHasChanged(); }
+
+	/// <summary>
 	/// Checks to ensure that the widget is still parented to the right panel.
 	/// </summary>
 
-	public void CheckParent ()
+	public void ParentHasChanged ()
 	{
 		if (mPanel != null)
 		{
@@ -314,7 +340,7 @@ public abstract class UIWidget : MonoBehaviour
 		// Ensure we have a panel to work with by now
 		if (mPanel == null) CreatePanel();
 #if UNITY_EDITOR
-		else if (!Application.isPlaying) CheckParent();
+		else if (!Application.isPlaying) ParentHasChanged();
 #endif
 		
 		// Automatically reset the Z scaling component back to 1 as it's not used

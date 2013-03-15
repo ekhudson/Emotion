@@ -14,7 +14,7 @@ public class FootoEntity : TNBehaviour
 {    
     Transform mTrans;
     Player mOwner = null;
-    Vector3 mTarget;
+    Vector3 mTarget = Vector3.zero;
     Quaternion mRotTarget;
     public float MoveSpeed = 5f;
     public float RunModifier = 2f;
@@ -23,6 +23,7 @@ public class FootoEntity : TNBehaviour
     public AnimationCurve JumpVelocityCurve;
     public float MinJumpTime = 0.25f;
     public float MaxJumpTime = 1f;
+    public bool IsMonster;
     
     public System.Collections.Generic.List<ItemAttachPoint> AttachPoints = new System.Collections.Generic.List<ItemAttachPoint>();
     
@@ -68,7 +69,7 @@ public class FootoEntity : TNBehaviour
     void Awake ()
     {
         mTrans = transform;
-        mTarget = mTrans.position;
+        //mTarget = mTrans.position;
         mRotTarget = mTrans.rotation;
         mController = GetComponent<CharacterController>();
     
@@ -82,6 +83,7 @@ public class FootoEntity : TNBehaviour
         if (Weapons.Count == 0)
         {
             Debug.Log(gameObject.name + " has no weapons", this);
+            return;
         }
         
         if (Weapons.Count > AttachPoints.Count)
@@ -113,105 +115,112 @@ public class FootoEntity : TNBehaviour
 
     void Update ()
     {
+
+
         //mTrans.position = Vector3.Lerp(mTrans.position, mTarget, Time.deltaTime * 20f);
         mController.Move( (mTarget * MoveSpeed) * Time.deltaTime);
         mTrans.rotation = Quaternion.Lerp(mTrans.rotation, mRotTarget, Time.deltaTime * 20f);
 
         if(mOwner != null && Camera.main != null)
         {
-            if (TNManager.playerID == mOwner.id)
-            {
-    
-            Ray ray = MainCamera.Instance.camera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-    
-            if(Physics.Raycast(ray,out hit,1000))
-            {
-
-                Vector3 dif = hit.point - mTrans.position;
-                dif.y = 0;
-        
-                mRotTarget = Quaternion.LookRotation(dif,Vector3.up);
-            }
-    
             mTarget = Vector3.zero;
-    
-            if(Input.GetKey(KeyCode.A))
-            {
-                mTarget += (new Vector3(-1 , 0 , 0));
-            }
-    
-            if(Input.GetKey(KeyCode.D))
-            {
-                mTarget += (new Vector3(1, 0, 0));
-            }
-    
-            if(Input.GetKey(KeyCode.W))
-            {
-                mTarget += (new Vector3(0, 0 , 1));
-            }
-    
-            if(Input.GetKey(KeyCode.S))
-            { 
-                mTarget += (new Vector3(0, 0 , -1));
-            }
 
-            if(Input.GetKeyDown(KeyCode.R))
+            if (!IsMonster)
             {
-                mCurrentWeapon.ReloadWeapon();
-            }
-    
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (Input.GetKey(KeyCode.LeftShift)){ return; }
-        
-                mCurrentWeapon.CurrentFiringPoint = transform;
-                mCurrentWeapon.StartFiring();
-            }
-    
-            if (Input.GetMouseButtonUp(0))
-            {
-                if (Input.GetKey(KeyCode.LeftShift)){ return; }
-    
-                mCurrentWeapon.StopFiring();
-            }
-    
-            if (Input.GetMouseButtonDown(1))
-            {
-                if (Input.GetKey(KeyCode.LeftShift)){ return; }
-
-                if (Weapons.Count >= 2)
+                if (TNManager.playerID == mOwner.id)
                 {
-                    Weapons[1].CurrentFiringPoint = transform;
-                    Weapons[1].StartFiring();
+        
+                Ray ray = MainCamera.Instance.camera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+        
+                if(Physics.Raycast(ray,out hit,1000))
+                {
+    
+                    Vector3 dif = hit.point - mTrans.position;
+                    dif.y = 0;
+
+                    mRotTarget = Quaternion.LookRotation(dif,Vector3.up);
                 }
-            }
+
+
+
+                if(Input.GetKey(KeyCode.A))
+                {
+                    mTarget += (new Vector3(-1 , 0 , 0));
+                }
+        
+                if(Input.GetKey(KeyCode.D))
+                {
+                    mTarget += (new Vector3(1, 0, 0));
+                }
+        
+                if(Input.GetKey(KeyCode.W))
+                {
+                    mTarget += (new Vector3(0, 0 , 1));
+                }
+        
+                if(Input.GetKey(KeyCode.S))
+                { 
+                    mTarget += (new Vector3(0, 0 , -1));
+                }
+
+                if(Input.GetKeyDown(KeyCode.R))
+                {
+                    mCurrentWeapon.ReloadWeapon();
+                }
+        
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (Input.GetKey(KeyCode.LeftShift)){ return; }
             
-            if (Input.GetMouseButtonUp(1))
-            {
-                if (Input.GetKey(KeyCode.LeftShift)){ return; }
-    
-                if (Weapons.Count >= 2)
-                {
-                    Weapons[1].StopFiring();
+                    mCurrentWeapon.CurrentFiringPoint = transform;
+                    mCurrentWeapon.StartFiring();
                 }
-            }
         
-            if (renderer.enabled == false && Input.GetKeyDown(KeyCode.Space))
-            {
-                renderer.enabled = true;
-                mCurrentHealth = MaxHealth;
-                NGUITools.SetActive(loseScreen,false);
-            }
-
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                mTarget *= RunModifier;
-                mCurrentWeapon.StopFiring();
-
-                if (Weapons.Count > 1)
+                if (Input.GetMouseButtonUp(0))
                 {
-                    Weapons[1].StopFiring();
+                    if (Input.GetKey(KeyCode.LeftShift)){ return; }
+        
+                    mCurrentWeapon.StopFiring();
+                }
+        
+                if (Input.GetMouseButtonDown(1))
+                {
+                    if (Input.GetKey(KeyCode.LeftShift)){ return; }
+    
+                    if (Weapons.Count >= 2)
+                    {
+                        Weapons[1].CurrentFiringPoint = transform;
+                        Weapons[1].StartFiring();
+                    }
+                }
+                
+                if (Input.GetMouseButtonUp(1))
+                {
+                    if (Input.GetKey(KeyCode.LeftShift)){ return; }
+        
+                    if (Weapons.Count >= 2)
+                    {
+                        Weapons[1].StopFiring();
+                    }
+                }
+            
+                if (renderer.enabled == false && Input.GetKeyDown(KeyCode.Space))
+                {
+                    renderer.enabled = true;
+                    mCurrentHealth = MaxHealth;
+                   // NGUITools.SetActive(loseScreen,false);
+                }
+    
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    mTarget *= RunModifier;
+                    mCurrentWeapon.StopFiring();
+    
+                    if (Weapons.Count > 1)
+                    {
+                        Weapons[1].StopFiring();
+                    }
                 }
             }
 
@@ -275,8 +284,8 @@ public class FootoEntity : TNBehaviour
     
             //mTarget = transform.position;
     
-                tno.SendQuickly(3, Target.OthersSaved, mTrans.position);
-                tno.SendQuickly(4, Target.OthersSaved, mRotTarget);
+            tno.SendQuickly(3, Target.OthersSaved, mTrans.position);
+            tno.SendQuickly(4, Target.OthersSaved, mRotTarget);
             }
         }
     }
@@ -395,7 +404,7 @@ public class FootoEntity : TNBehaviour
 //DEBUG
     private void DrawWeaponInfo()
     {
-        if (NetworkManager.Instance != null & TNManager.player != mOwner)
+        if ((NetworkManager.Instance != null && TNManager.player != mOwner) || mCurrentWeapon == null)
         {
             return;
         }
@@ -466,11 +475,16 @@ public class FootoEntity : TNBehaviour
             KillEntity();
         }
     }
+
+    public void MoveEntity(Vector3 direction)
+    {
+        mTarget += direction;
+    }
  
     public void KillEntity()
     {
-        NGUITools.SetActive(loseScreen,true);
-        renderer.enabled = false;
+        //NGUITools.SetActive(loseScreen,true);
+        //renderer.enabled = false;
     }
 
     void OnGUI()

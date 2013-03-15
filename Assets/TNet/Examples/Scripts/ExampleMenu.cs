@@ -378,7 +378,7 @@ public class ExampleMenu : MonoBehaviour
 			NGUITools.SetActive(go_channelParent,true);
 			channelSelection();
 		}
-		
+
 		mMessage = message;
 		setMessage(mMessage);
 	}

@@ -8,6 +8,14 @@ public class SearchRadius : MonoBehaviour {
 	private List<Collider> _removeList = new List<Collider>();
 	private float _scrubTimeInterval = 0.5f; //how often the list is scrubbed for nulls
 
+    public SphereCollider SearchCollider
+    {
+        get
+        {
+            return GetComponent<SphereCollider>();
+        }
+    }
+
 	// Use this for initialization
 	void Start () {
 

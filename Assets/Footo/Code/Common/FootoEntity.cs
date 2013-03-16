@@ -28,9 +28,6 @@ public class FootoEntity : TNBehaviour
     public System.Collections.Generic.List<ItemAttachPoint> AttachPoints = new System.Collections.Generic.List<ItemAttachPoint>();
     
     public System.Collections.Generic.List<WeaponClass> Weapons = new System.Collections.Generic.List<WeaponClass>();
-    
-    public UISlider healthBar;
-    public GameObject loseScreen;
 
     public enum PLAYERSTATES
     {
@@ -116,178 +113,175 @@ public class FootoEntity : TNBehaviour
     void Update ()
     {
 
-
-        //mTrans.position = Vector3.Lerp(mTrans.position, mTarget, Time.deltaTime * 20f);
-        mController.Move( (mTarget * MoveSpeed) * Time.deltaTime);
-        mTrans.rotation = Quaternion.Lerp(mTrans.rotation, mRotTarget, Time.deltaTime * 20f);
-
         if(mOwner != null && Camera.main != null)
         {
-            mTarget = Vector3.zero;
-
             if (!IsMonster)
             {
                 if (TNManager.playerID == mOwner.id)
                 {
         
-                Ray ray = MainCamera.Instance.camera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-        
-                if(Physics.Raycast(ray,out hit,1000))
-                {
-    
-                    Vector3 dif = hit.point - mTrans.position;
-                    dif.y = 0;
+                    Ray ray = MainCamera.Instance.camera.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit hit;
 
-                    mRotTarget = Quaternion.LookRotation(dif,Vector3.up);
-                }
-
-
-
-                if(Input.GetKey(KeyCode.A))
-                {
-                    mTarget += (new Vector3(-1 , 0 , 0));
-                }
-        
-                if(Input.GetKey(KeyCode.D))
-                {
-                    mTarget += (new Vector3(1, 0, 0));
-                }
-        
-                if(Input.GetKey(KeyCode.W))
-                {
-                    mTarget += (new Vector3(0, 0 , 1));
-                }
-        
-                if(Input.GetKey(KeyCode.S))
-                { 
-                    mTarget += (new Vector3(0, 0 , -1));
-                }
-
-                if(Input.GetKeyDown(KeyCode.R))
-                {
-                    mCurrentWeapon.ReloadWeapon();
-                }
-        
-                if (Input.GetMouseButtonDown(0))
-                {
-                    if (Input.GetKey(KeyCode.LeftShift)){ return; }
-            
-                    mCurrentWeapon.CurrentFiringPoint = transform;
-                    mCurrentWeapon.StartFiring();
-                }
-        
-                if (Input.GetMouseButtonUp(0))
-                {
-                    if (Input.GetKey(KeyCode.LeftShift)){ return; }
-        
-                    mCurrentWeapon.StopFiring();
-                }
-        
-                if (Input.GetMouseButtonDown(1))
-                {
-                    if (Input.GetKey(KeyCode.LeftShift)){ return; }
-    
-                    if (Weapons.Count >= 2)
+                    if(Physics.Raycast(ray,out hit,1000))
                     {
-                        Weapons[1].CurrentFiringPoint = transform;
-                        Weapons[1].StartFiring();
+                        Vector3 dif = hit.point - mTrans.position;
+                        dif.y = 0;
+    
+                        mRotTarget = Quaternion.LookRotation(dif,Vector3.up);
                     }
-                }
+
+                    if(Input.GetKey(KeyCode.A))
+                    {
+                        mTarget += (new Vector3(-1 , 0 , 0));
+                    }
+            
+                    if(Input.GetKey(KeyCode.D))
+                    {
+                        mTarget += (new Vector3(1, 0, 0));
+                    }
+            
+                    if(Input.GetKey(KeyCode.W))
+                    {
+                        mTarget += (new Vector3(0, 0 , 1));
+                    }
+            
+                    if(Input.GetKey(KeyCode.S))
+                    { 
+                        mTarget += (new Vector3(0, 0 , -1));
+                    }
+    
+                    if(Input.GetKeyDown(KeyCode.R))
+                    {
+                        mCurrentWeapon.ReloadWeapon();
+                    }
+            
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        if (Input.GetKey(KeyCode.LeftShift)){ return; }
                 
-                if (Input.GetMouseButtonUp(1))
-                {
-                    if (Input.GetKey(KeyCode.LeftShift)){ return; }
-        
-                    if (Weapons.Count >= 2)
-                    {
-                        Weapons[1].StopFiring();
+                        mCurrentWeapon.CurrentFiringPoint = transform;
+                        mCurrentWeapon.StartFiring();
                     }
-                }
             
-                if (renderer.enabled == false && Input.GetKeyDown(KeyCode.Space))
-                {
-                    renderer.enabled = true;
-                    mCurrentHealth = MaxHealth;
-                   // NGUITools.SetActive(loseScreen,false);
-                }
-    
-                if (Input.GetKey(KeyCode.LeftShift))
-                {
-                    mTarget *= RunModifier;
-                    mCurrentWeapon.StopFiring();
-    
-                    if (Weapons.Count > 1)
+                    if (Input.GetMouseButtonUp(0))
                     {
-                        Weapons[1].StopFiring();
+                        if (Input.GetKey(KeyCode.LeftShift)){ return; }
+            
+                        mCurrentWeapon.StopFiring();
+                    }
+            
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        if (Input.GetKey(KeyCode.LeftShift)){ return; }
+        
+                        if (Weapons.Count >= 2)
+                        {
+                            Weapons[1].CurrentFiringPoint = transform;
+                            Weapons[1].StartFiring();
+                        }
+                    }
+                    
+                    if (Input.GetMouseButtonUp(1))
+                    {
+                        if (Input.GetKey(KeyCode.LeftShift)){ return; }
+            
+                        if (Weapons.Count >= 2)
+                        {
+                            Weapons[1].StopFiring();
+                        }
+                    }
+                
+                    if (renderer.enabled == false && Input.GetKeyDown(KeyCode.Space))
+                    {
+                        renderer.enabled = true;
+                        mCurrentHealth = MaxHealth;
+                    }
+        
+                    if (Input.GetKey(KeyCode.LeftShift))
+                    {
+                        mTarget *= RunModifier;
+                        mCurrentWeapon.StopFiring();
+        
+                        if (Weapons.Count > 1)
+                        {
+                            Weapons[1].StopFiring();
+                        }
                     }
                 }
-            }
 
-            switch(_state)
-            {
-                case PLAYERSTATES.RUNNING:
+                switch(_state)
+                {
+                    case PLAYERSTATES.RUNNING:
+        
+                        if (Input.GetKeyDown(KeyCode.Space) && mController.isGrounded)
+                        {
+                            SetState(PLAYERSTATES.JUMPING);
+                        }
+                        else if (!mController.isGrounded)
+                        {
+                            SetState(PLAYERSTATES.FALLING);
+                        }
     
-                    if (Input.GetKeyDown(KeyCode.Space) && mController.isGrounded)
-                    {
-                        SetState(PLAYERSTATES.JUMPING);
-                    }
-                    else if (!mController.isGrounded)
-                    {
-                        SetState(PLAYERSTATES.FALLING);
-                    }
-
-                break;
-
-                case PLAYERSTATES.JUMPING:
-
-                    if (mCurrentStateTime < MinJumpTime)
-                    {
-                        mFallSpeed.y = JumpVelocityCurve.Evaluate(mCurrentStateTime);
-                    }
-                    else if (Input.GetKey(KeyCode.Space) && mCurrentStateTime >= MaxJumpTime && !mController.isGrounded)
-                    {
-                        SetState(PLAYERSTATES.FALLING);
-                    }
-                    else if (!Input.GetKey(KeyCode.Space) && mCurrentStateTime > MinJumpTime)
-                    {
-                        SetState(PLAYERSTATES.FALLING);
-                    }
-                    else if (mController.isGrounded)
-                    {
-                        SetState(PLAYERSTATES.RUNNING);
-                    }
-
-                break;
-
-                case PLAYERSTATES.FALLING:
+                    break;
     
-                    if (!mController.isGrounded)
-                    {
-                        mFallSpeed += Physics.gravity * Time.deltaTime;
-
-                    }
-                    else if (mController.isGrounded)
-                    {
-                        SetState(PLAYERSTATES.RUNNING);
-                    }
-
-
-                break;
-
-            }
-
-            mTarget += mFallSpeed;
-
-            mCurrentStateTime += Time.deltaTime;
-            //healthBar.sliderValue = (float)mCurrentHealth / (float)MaxHealth;
+                    case PLAYERSTATES.JUMPING:
     
-            //mTarget = transform.position;
+                        if (mCurrentStateTime < MinJumpTime)
+                        {
+                            mFallSpeed.y = JumpVelocityCurve.Evaluate(mCurrentStateTime);
+                        }
+                        else if (Input.GetKey(KeyCode.Space) && mCurrentStateTime >= MaxJumpTime && !mController.isGrounded)
+                        {
+                            SetState(PLAYERSTATES.FALLING);
+                        }
+                        else if (!Input.GetKey(KeyCode.Space) && mCurrentStateTime > MinJumpTime)
+                        {
+                            SetState(PLAYERSTATES.FALLING);
+                        }
+                        else if (mController.isGrounded)
+                        {
+                            SetState(PLAYERSTATES.RUNNING);
+                        }
     
-            tno.SendQuickly(3, Target.OthersSaved, mTrans.position);
-            tno.SendQuickly(4, Target.OthersSaved, mRotTarget);
+                    break;
+    
+                    case PLAYERSTATES.FALLING:
+        
+                        if (!mController.isGrounded)
+                        {
+                            mFallSpeed += Physics.gravity * Time.deltaTime;
+    
+                        }
+                        else if (mController.isGrounded)
+                        {
+                            SetState(PLAYERSTATES.RUNNING);
+                        }
+
+                    break;
+
+                }
+
+                mTarget += mFallSpeed;
+    
+                mCurrentStateTime += Time.deltaTime;
+        
+                tno.SendQuickly(3, Target.OthersSaved, mTrans.position);
+                tno.SendQuickly(4, Target.OthersSaved, mRotTarget);
+
             }
         }
+
+        UpdatePosition();
+
+    }
+
+    public void UpdatePosition()
+    {
+        mController.Move( (mTarget * MoveSpeed) * Time.deltaTime);
+        mTrans.rotation = Quaternion.Lerp(mTrans.rotation, mRotTarget, Time.deltaTime * 20f);
+
+        mTarget = Vector3.zero;
     }
 
     public void SetState(PLAYERSTATES newState)
@@ -483,8 +477,7 @@ public class FootoEntity : TNBehaviour
  
     public void KillEntity()
     {
-        //NGUITools.SetActive(loseScreen,true);
-        //renderer.enabled = false;
+
     }
 
     void OnGUI()

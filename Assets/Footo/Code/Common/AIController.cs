@@ -33,29 +33,29 @@ public class AIController : MonoBehaviour
 
     private void Update()
     {
-        switch(mBehaviourState)
-        {
-            case MonsterBehaviourStates.IDLE:
-
-                LookForEntitiesByTag("Player");
-
-            break;
-
-            case MonsterBehaviourStates.HUNTING:
-
-                mEntity.MoveEntity(mCurrentMoveDirection);
-                mCurrentMoveDirection = (mTargetLocation - transform.position).normalized;
-
-            break;
-
-            case MonsterBehaviourStates.CHASING:
-
-                mEntity.MoveEntity(mCurrentMoveDirection);
-                mTargetLocation = mCurrentTarget.transform.position;
-                mCurrentMoveDirection = (mTargetLocation - transform.position).normalized;
-
-            break;
-        }
+//        switch(mBehaviourState)
+//        {
+//            case MonsterBehaviourStates.IDLE:
+//
+//                LookForEntitiesByTag("Player");
+//
+//            break;
+//
+//            case MonsterBehaviourStates.HUNTING:
+//
+//                mEntity.MoveEntity(mCurrentMoveDirection);
+//                mCurrentMoveDirection = (mTargetLocation - transform.position).normalized;
+//
+//            break;
+//
+//            case MonsterBehaviourStates.CHASING:
+//
+//                mEntity.MoveEntity(mCurrentMoveDirection);
+//                mTargetLocation = mCurrentTarget.transform.position;
+//                mCurrentMoveDirection = (mTargetLocation - transform.position).normalized;
+//
+//            break;
+//        }
     }
 
     private void LookForEntitiesByTag(string tag)

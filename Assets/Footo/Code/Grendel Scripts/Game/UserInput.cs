@@ -25,7 +25,7 @@ public class UserInput : Singleton<UserInput>
           
           if(Input.GetKeyDown(KeyCode.M))
           {               
-               MapCamera.Instance.ToggleScript();               
+
           }
 
           if(Input.GetKeyDown(KeyCode.Equals))

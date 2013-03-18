@@ -6,7 +6,7 @@ public class EntityManager : MonoBehaviour {
 
 	public int UpdateAmount = 5;
 	public int CreationAmount = 5;
-	public static int MaxEntities = 1000; //limit to max number of entities allowed in the scene	
+	public static int MaxEntities = 1000; //limit the max number of entities allowed in the scene
 	public static Dictionary<int, Entity> EntityDictionary = new Dictionary<int, Entity>();	//list of entities
 	
 	private static int _lastOpenIndex = 0; //a reference to the last open index for adding new entities

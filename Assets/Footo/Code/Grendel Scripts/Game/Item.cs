@@ -16,7 +16,7 @@ public class Item : BaseObject {
 	public AudioClip[] PickupSounds;
 	public AudioClip[] BounceSounds;
 	
-	protected float _timeToSleep = 4f; //time this item takes to remove its rigid body
+	protected const float ktimeToSleep = 4f; //time this item takes to remove its rigid body
 		
 	//void Awake()
 	//{
@@ -64,7 +64,7 @@ public class Item : BaseObject {
 	
 	IEnumerator TimeOut()
 	{
-		yield return new WaitForSeconds(_timeToSleep);
-		Destroy(_rigidbody);		
+		yield return new WaitForSeconds(ktimeToSleep);
+		Destroy(mRigidbody);
 	}
 }

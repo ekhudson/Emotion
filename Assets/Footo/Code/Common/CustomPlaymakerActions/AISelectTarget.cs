@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using HutongGames.PlayMaker;
 
 [ActionCategory("AIEntity")]
-[Tooltip("Selects a target from the AI's list of candidates")]
+[Tooltip("Selects a target from the AI's list of candidates, based on critera provided")]
 public class AISelectTarget: FsmStateAction
 {
 
@@ -32,7 +32,7 @@ public class AISelectTarget: FsmStateAction
             testTarget = obj;
         }
 
-         if (testTarget != null)
+        if (testTarget != null)
         {
             Controller.UpdateCurrentTarget(testTarget);
             StoreTargetDirection = (testTarget.transform.position - Controller.transform.position).normalized * Controller.OwnerEntity.MoveSpeed;

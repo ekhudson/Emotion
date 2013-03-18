@@ -10,16 +10,16 @@ using TNet;
 /// You can see it used on draggable cubes in Example 3.
 /// </summary>
 
-public class FootoEntity : TNBehaviour
+public class FootoEntity : Entity
 {    
-    Transform mTrans;
+   // Transform mTransform;
     Player mOwner = null;
     Vector3 mTarget = Vector3.zero;
     Quaternion mRotTarget;
     public float MoveSpeed = 5f;
     public float RunModifier = 2f;
     public int MaxHealth = 100;
-    private int mCurrentHealth;
+    //private int mCurrentHealth;
     public AnimationCurve JumpVelocityCurve;
     public float MinJumpTime = 0.25f;
     public float MaxJumpTime = 1f;
@@ -56,24 +56,31 @@ public class FootoEntity : TNBehaviour
         }
     }
 
-    public int Health
-    {
-        get
-        {
-            return mCurrentHealth;
-        }
-    }
+//    public int Health
+//    {
+//        get
+//        {
+//            return mCurrentHealth;
+//        }
+//    }
 
-    void Awake ()
+    protected override void Awake ()
     {
-        mTrans = transform;
-        //mTarget = mTrans.position;
-        mRotTarget = mTrans.rotation;
+        base.Awake();
+
+        //mTransform = transform;
+        //mTarget = mTransform.position;
+        mRotTarget = mTransform.rotation;
         mController = GetComponent<CharacterController>();
     
         mCurrentHealth = MaxHealth;
     
         SetupWeapons();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
     }
  
     private void SetupWeapons()
@@ -126,7 +133,7 @@ public class FootoEntity : TNBehaviour
 
                     if(Physics.Raycast(ray,out hit,1000))
                     {
-                        Vector3 dif = hit.point - mTrans.position;
+                        Vector3 dif = hit.point - mTransform.position;
                         dif.y = 0;
     
                         mRotTarget = Quaternion.LookRotation(dif,Vector3.up);
@@ -267,7 +274,7 @@ public class FootoEntity : TNBehaviour
     
                 mCurrentStateTime += Time.deltaTime;
         
-                tno.SendQuickly(3, Target.OthersSaved, mTrans.position);
+                tno.SendQuickly(3, Target.OthersSaved, mTransform.position);
                 tno.SendQuickly(4, Target.OthersSaved, mRotTarget);
 
             }
@@ -280,7 +287,7 @@ public class FootoEntity : TNBehaviour
     public void UpdatePosition()
     {
         mController.Move( (mTarget * MoveSpeed) * Time.deltaTime);
-        mTrans.rotation = Quaternion.Lerp(mTrans.rotation, mRotTarget, Time.deltaTime * 20f);
+        mTransform.rotation = Quaternion.Lerp(mTransform.rotation, mRotTarget, Time.deltaTime * 20f);
 
         mTarget = Vector3.zero;
     }
@@ -446,7 +453,7 @@ public class FootoEntity : TNBehaviour
     public void ClaimObject (int playerID, Vector3 pos)
     {
         mOwner = TNManager.GetPlayer(playerID);
-        mTrans.position = pos;
+        mTransform.position = pos;
         mTarget = pos;
         
         // Move the object to the Ignore Raycast layer while it's being dragged
@@ -459,17 +466,17 @@ public class FootoEntity : TNBehaviour
  /// <param name='updateValue'>
  /// Update value.
  /// </param>
-    public void UpdateHealth(object sender, int updateValue, HealthUpdateType.HealthUpdateTypes type)
-    {       
-        mCurrentHealth = Mathf.Clamp(mCurrentHealth + updateValue, 0, MaxHealth);
-    
-        EventManager.Instance.Post(new HealthUpdateEvent(sender, type, updateValue, mCurrentHealth, transform.position));
-    
-        if (mCurrentHealth <= 0)
-        {
-            KillEntity();
-        }
-    }
+//    public void UpdateHealth(object sender, int updateValue, HealthUpdateType.HealthUpdateTypes type)
+//    {       
+//        mCurrentHealth = Mathf.Clamp(mCurrentHealth + updateValue, 0, MaxHealth);
+//    
+//        EventManager.Instance.Post(new HealthUpdateEvent(sender, type, updateValue, mCurrentHealth, transform.position));
+//
+//        if (mCurrentHealth <= 0)
+//        {
+//            KillEntity();
+//        }
+//    }
 
     public void MoveEntity(Vector3 direction)
     {
@@ -500,7 +507,7 @@ public class FootoEntity : TNBehaviour
     /// Save the target position.
     /// </summary>
     
-    [RFC(3)] void MoveObject (Vector3 pos) { mTrans.position = pos; }
+    [RFC(3)] void MoveObject (Vector3 pos) { mTransform.position = pos; }
     [RFC(4)] void RotateObject (Quaternion rot) { mRotTarget = rot; }
     [RFC(5)] void UpdateHealthOverNetwork(int health) { mCurrentHealth = health; }
  

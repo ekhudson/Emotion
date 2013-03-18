@@ -61,7 +61,7 @@ public class GrendelPlayer : Entity
                 break;            
             }         
 
-            _transform.localPosition += ( _move  * Time.deltaTime);
+            mTransform.localPosition += ( _move  * Time.deltaTime);
             
         }
         else
@@ -159,14 +159,14 @@ public class GrendelPlayer : Entity
         //do nothing
     }
     
-    public override int TakeDamage(int amount)
-    {        
-        return base.TakeDamage(amount);
-    }    
+//    public override int TakeDamage(int amount)
+//    {        
+//        return base.TakeDamage(amount);
+//    }
     
     public void ResetPlayer()
     {
-        _transform.position = new Vector3(-1f, 1.3f, 1f);
+        mTransform.position = new Vector3(-1f, 1.3f, 1f);
     }
     
     public void ResetPlayer(ConsoleCommandParams parameters)

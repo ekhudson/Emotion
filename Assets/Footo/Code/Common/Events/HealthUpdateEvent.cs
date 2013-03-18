@@ -6,6 +6,7 @@ public class HealthUpdateEvent : EventBase
 	[SerializeField]protected HealthUpdateType.HealthUpdateTypes mUpdateType;
 	protected int mUpdateAmount;
 	protected int mNewHealthAmount;
+    protected Entity mSubject;
 	
 	public HealthUpdateType.HealthUpdateTypes UpdateType
 	{
@@ -15,11 +16,17 @@ public class HealthUpdateEvent : EventBase
 	public int UpdateAmount
 	{
 		get { return mUpdateAmount; }
-	}	
+	}
 
-    public HealthUpdateEvent(object sender, HealthUpdateType.HealthUpdateTypes updateType, int updateAmount, int newHealthAmount, Vector3 position) : base(position, sender)
+    public Entity Subject
+    {
+        get { return mSubject; }
+    }
+
+    public HealthUpdateEvent(object sender, Entity subject, HealthUpdateType.HealthUpdateTypes updateType, int updateAmount, int newHealthAmount, Vector3 position) : base(position, sender)
     {   		
-		mUpdateType = updateType;
+        mSubject = subject;
+        mUpdateType = updateType;
 		mUpdateAmount = updateAmount;
 		mNewHealthAmount = newHealthAmount;
     }	

@@ -24,6 +24,7 @@ public class FootoEntity : TNBehaviour
     public float MinJumpTime = 0.25f;
     public float MaxJumpTime = 1f;
     public bool IsMonster;
+    public float FieldOfView;
     
     public System.Collections.Generic.List<ItemAttachPoint> AttachPoints = new System.Collections.Generic.List<ItemAttachPoint>();
     

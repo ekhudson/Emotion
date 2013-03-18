@@ -49,7 +49,8 @@
      <Compile Include="Assets\Footo\Code\Common\BoxManager.cs" />
      <Compile Include="Assets\Footo\Code\Common\Bullet.cs" />
      <Compile Include="Assets\Footo\Code\Common\ChannelBtn.cs" />
-     <Compile Include="Assets\Footo\Code\Common\CustomPlaymakerActions\AIFindObjectByTag.cs" />
+     <Compile Include="Assets\Footo\Code\Common\CustomPlaymakerActions\AIFindObjectsByTag.cs" />
+     <Compile Include="Assets\Footo\Code\Common\CustomPlaymakerActions\AISelectTarget.cs" />
      <Compile Include="Assets\Footo\Code\Common\Events\CameraMoveEvent.cs" />
      <Compile Include="Assets\Footo\Code\Common\Events\HealthUpdateEvent.cs" />
      <Compile Include="Assets\Footo\Code\Common\FootoEntity.cs" />

@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class AIController : MonoBehaviour
 {
     private FootoEntity mEntity;
 
+    private List<GameObject> mCandidateList = new List<GameObject>();
     private Vector3 mTargetLocation;
 
     private Vector3 mCurrentMoveDirection;
@@ -25,6 +27,22 @@ public class AIController : MonoBehaviour
 
     private MonsterBehaviourStates mBehaviourState;
 
+    public List<GameObject> CandidateList
+    {
+        get
+        {
+            return mCandidateList;
+        }
+    }
+
+    public FootoEntity OwnerEntity
+    {
+        get
+        {
+            return mEntity;
+        }
+    }
+
     private void Start()
     {
         mEntity = GetComponent<FootoEntity>();
@@ -33,29 +51,7 @@ public class AIController : MonoBehaviour
 
     private void Update()
     {
-//        switch(mBehaviourState)
-//        {
-//            case MonsterBehaviourStates.IDLE:
-//
-//                LookForEntitiesByTag("Player");
-//
-//            break;
-//
-//            case MonsterBehaviourStates.HUNTING:
-//
-//                mEntity.MoveEntity(mCurrentMoveDirection);
-//                mCurrentMoveDirection = (mTargetLocation - transform.position).normalized;
-//
-//            break;
-//
-//            case MonsterBehaviourStates.CHASING:
-//
-//                mEntity.MoveEntity(mCurrentMoveDirection);
-//                mTargetLocation = mCurrentTarget.transform.position;
-//                mCurrentMoveDirection = (mTargetLocation - transform.position).normalized;
-//
-//            break;
-//        }
+
     }
 
     private void LookForEntitiesByTag(string tag)
@@ -80,6 +76,16 @@ public class AIController : MonoBehaviour
         }
     }
 
+    public void UpdateCandidateList(List<GameObject> candidateList)
+    {
+        mCandidateList = candidateList;
+    }
+
+    public void UpdateCurrentTarget(GameObject target)
+    {
+        mCurrentTarget = target;
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
@@ -90,6 +96,16 @@ public class AIController : MonoBehaviour
 
         Gizmos.color = Color.white;
 
+        if (mCandidateList != null)
+        {
+            foreach(GameObject obj in mCandidateList)
+            {
+                Gizmos.color = Color.magenta;
+                Gizmos.DrawLine(transform.position, obj.transform.position);
+            }
+        }
+
+        Gizmos.color = Color.white;
     }
 
 }

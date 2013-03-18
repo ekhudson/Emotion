@@ -7,4 +7,4 @@
 *.unityproj
 *.sln
 
-Library/
+Library*

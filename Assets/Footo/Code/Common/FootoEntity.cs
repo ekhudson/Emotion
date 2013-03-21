@@ -259,7 +259,6 @@ public class FootoEntity : Entity
                         if (!mController.isGrounded)
                         {
                             mFallSpeed += Physics.gravity * Time.deltaTime;
-    
                         }
                         else if (mController.isGrounded)
                         {
@@ -270,7 +269,7 @@ public class FootoEntity : Entity
 
                 }
 
-                mTarget += mFallSpeed;
+                //mTarget += mFallSpeed;
     
                 mCurrentStateTime += Time.deltaTime;
         

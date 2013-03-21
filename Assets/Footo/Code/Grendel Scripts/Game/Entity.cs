@@ -23,7 +23,7 @@ public class Entity : BaseObject
     public bool DestroyedOnDeath = true; //is this Entity destroyed when it dies?
     public FactionManager.Factions Faction; //this Entity's Faction
     public bool Invincible = false; //set to true to prevent this Entity ever taking damage
-    public int Health = 100; //the Entity's starting health
+    public int Health = 100; //the Entity's starting health / max health
     
     //PROTECTED VARIABLES
     protected int mCurrentHealth; //the entity's current health
@@ -119,7 +119,7 @@ public class Entity : BaseObject
             return mCurrentHealth;
         }
 
-        mCurrentHealth += updateValue;
+        mCurrentHealth = Mathf.Clamp(mCurrentHealth + updateValue, 0, Health);
 
         EventManager.Instance.Post(new HealthUpdateEvent(sender, subject, HealthUpdateType.HealthUpdateTypes.None, updateValue, mCurrentHealth, mTransform.position));
 

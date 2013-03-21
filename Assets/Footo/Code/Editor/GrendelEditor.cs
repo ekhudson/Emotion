@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEditor;
 
 public class GrendelEditor<T> : Editor where T : class
-{	
-	public T Target
+{
+
+    public T Target
 	{
 		get{return target as T;}		
 	}
@@ -14,4 +15,5 @@ public class GrendelEditor<T> : Editor where T : class
 	{
 		base.OnInspectorGUI();	
 	}
+
 }

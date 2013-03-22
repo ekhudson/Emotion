@@ -52,7 +52,7 @@ public class UserInput : Singleton<UserInput>
     // Use this for initialization
     private void Start ()
     {
-    
+
     }
 
     private void StoreKeyBindings()

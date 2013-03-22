@@ -150,28 +150,40 @@ namespace GrendelEditor.UI
             public bool WaitingForAltKeypress = false;
         }
 
-        public static void KeyBindButtonLayout(float buttonWidth, float buttonHeight, UserInput.KeyBinding binding, bool mouseBinder)
+        /// <summary>
+        /// Keies the bind button layout.
+        /// </summary>
+        /// <returns>
+        /// true if any bindings were changed
+        /// </returns>
+        /// <param name='buttonWidth'>
+        /// If set to <c>true</c> button width.
+        /// </param>
+        /// <param name='buttonHeight'>
+        /// If set to <c>true</c> button height.
+        /// </param>
+        /// <param name='binding'>
+        /// If set to <c>true</c> binding.
+        /// </param>
+        /// <param name='mouseBinder'>
+        /// If set to <c>true</c> mouse binder.
+        /// </param>
+        public static bool KeyBindButtonLayout(float buttonWidth, float buttonHeight, UserInput.KeyBinding binding, bool mouseBinder)
         {
-            KeyBindButton(Vector2.zero, buttonWidth, buttonHeight, binding, true);
+            return KeyBindButton(Vector2.zero, buttonWidth, buttonHeight, binding, true);
         }
 
-        private static void KeyBindButton(Vector2 position, float buttonWidth, float buttonHeight, UserInput.KeyBinding binding, bool isLayout)
+        private static bool KeyBindButton(Vector2 position, float buttonWidth, float buttonHeight, UserInput.KeyBinding binding, bool isLayout)
         {
             Rect controlRect = new Rect(position.x, position.y, buttonWidth, buttonHeight);
 
             int id = GUIUtility.GetControlID(FocusType.Passive, controlRect);
 
+            bool changed = false;
+
             KeyBindButtonState controlState = (KeyBindButtonState)GUIUtility.GetStateObject(typeof(KeyBindButtonState), id);
 
             string buttonText = binding.Key.ToString();
-
-            Event e = Event.current;
-
-            if (e.type == EventType.mouseDown || e.button == 1 || e.button == 2)
-            {
-                controlState.WaitingForMainKeypress = false;
-                controlState.WaitingForAltKeypress = false;
-            }
 
             if (isLayout)
             {
@@ -179,17 +191,34 @@ namespace GrendelEditor.UI
 
                 GUILayout.Label("Key: ");
 
+                if (binding.Key == KeyCode.None)
+                {
+                    GUI.color = Color.grey;
+                }
+
                 if (controlState.WaitingForMainKeypress)
                 {
                     GUI.color = Color.green;
                     buttonText = "Press key to bind";
+                    GUIUtility.keyboardControl = id;
                 }
 
                 controlState.WaitingForMainKeypress = GUILayout.Toggle(controlState.WaitingForMainKeypress, buttonText, GUI.skin.button, GUILayout.Width(buttonWidth));
 
+                if (controlState.WaitingForMainKeypress && binding.Key != KeyCode.None)
+                {
+                    if (GUILayout.Button("Clear"))
+                    {
+                        binding.Key = KeyCode.None;
+                        controlState.WaitingForMainKeypress = false;
+                        changed = true;
+                    }
+                }
+
                 if (controlState.WaitingForMainKeypress && controlState.WaitingForAltKeypress)
                 {
                     controlState.WaitingForAltKeypress = false;
+
                 }
 
                 GUILayout.FlexibleSpace();
@@ -200,13 +229,29 @@ namespace GrendelEditor.UI
 
                 buttonText = binding.AltKey.ToString();
 
+                if (binding.AltKey == KeyCode.None)
+                {
+                    GUI.color = Color.grey;
+                }
+
                 if (controlState.WaitingForAltKeypress)
                 {
                     GUI.color = Color.green;
                     buttonText = "Press key to bind";
+                    GUIUtility.keyboardControl = id;
                 }
 
                 controlState.WaitingForAltKeypress = GUILayout.Toggle(controlState.WaitingForAltKeypress, buttonText, GUI.skin.button, GUILayout.Width(buttonWidth));
+
+                if (controlState.WaitingForAltKeypress && binding.AltKey != KeyCode.None)
+                {
+                    if (GUILayout.Button("Clear"))
+                    {
+                        binding.AltKey = KeyCode.None;
+                        controlState.WaitingForAltKeypress = false;
+                        changed = true;
+                    }
+                }
 
                 if (controlState.WaitingForMainKeypress && controlState.WaitingForAltKeypress)
                 {
@@ -219,11 +264,25 @@ namespace GrendelEditor.UI
 
             }
 
+            Event e = Event.current;
 
+            if (e.type == EventType.mouseDown || e.button == 1 || e.button == 2)
+            {
+                controlState.WaitingForMainKeypress = false;
+                controlState.WaitingForAltKeypress = false;
+            }
 
+            if (controlState.WaitingForMainKeypress && e.type == EventType.keyDown)
+            {
+                controlState.WaitingForMainKeypress = false;
+                binding.Key = e.keyCode;
+                changed = true;
+            }
 
 
             GUI.color = Color.white;
+
+            return changed;
         }
      }
 }

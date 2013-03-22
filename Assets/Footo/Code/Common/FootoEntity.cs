@@ -339,9 +339,6 @@ public class FootoEntity : Entity
                     break;
                 }
 
-
-
-
             break;
             
             case PLAYERSTATES.FALLING:

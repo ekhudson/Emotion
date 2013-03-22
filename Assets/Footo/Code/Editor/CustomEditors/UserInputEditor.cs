@@ -11,6 +11,7 @@ public class UserInputEditor : GrendelEditor<UserInput>
 {
     private const float kLabelWidth = 64f;
     private const float kButtonWidth = 128f;
+    private const float kButtonHeight = 32f;
 
     private void OnEnable()
     {
@@ -36,10 +37,18 @@ public class UserInputEditor : GrendelEditor<UserInput>
 
     public override void OnInspectorGUI()
 	{
+        Undo.SetSnapshotTarget(Target, "User Input Change");
+
         DrawDefaultInspector();
+
+        bool changed = false;
 
         foreach(UserInput.KeyBinding binding in Target.KeyBindings)
         {
+
+            Undo.CreateSnapshot();
+            changed = false;
+
             GUILayout.BeginVertical(GUI.skin.box);
 
                 string name = binding.BindingName;
@@ -57,7 +66,7 @@ public class UserInputEditor : GrendelEditor<UserInput>
 
                     GUILayout.FlexibleSpace();
 
-                    CustomEditorGUI.KeyBindButtonLayout(kButtonWidth, 32f, binding, false);
+                    changed = CustomEditorGUI.KeyBindButtonLayout(kButtonWidth, kButtonHeight, binding, false);
 
                     GUILayout.FlexibleSpace();
 
@@ -67,17 +76,37 @@ public class UserInputEditor : GrendelEditor<UserInput>
     
                     GUILayout.BeginHorizontal();
 
-                        GUILayout.FlexibleSpace();
-    
-                        GUILayout.Label("Mouse: ", GUILayout.Width(kLabelWidth));
-                        GUILayout.Button(binding.MouseButton.ToString(), GUILayout.Width(kButtonWidth));
+                     EditorGUI.BeginChangeCheck();
+
+                        //GUILayout.FlexibleSpace();
+
+                        if (binding.MouseButton == UserInput.MouseButtons.None)
+                        {
+                            GUI.color = Color.grey;
+                        }
+
+                        EditorGUILayout.PrefixLabel("Mouse:");
+                        binding.MouseButton = (UserInput.MouseButtons)EditorGUILayout.EnumPopup(binding.MouseButton);
+
+                         GUI.color = Color.white;
 
                         GUILayout.FlexibleSpace();
 
-                        GUILayout.Label("Alt Mouse: ", GUILayout.Width(kLabelWidth));
-                        GUILayout.Button(binding.AltMouseButton.ToString(), GUILayout.Width(kButtonWidth));
-    
-                        GUILayout.FlexibleSpace();
+                        if (binding.AltMouseButton == UserInput.MouseButtons.None)
+                        {
+                            GUI.color = Color.grey;
+                        }
+
+                        EditorGUILayout.PrefixLabel("Alt Mouse:");
+                        binding.AltMouseButton = (UserInput.MouseButtons)EditorGUILayout.EnumPopup( binding.AltMouseButton);
+
+                         GUI.color = Color.white;
+
+                       // GUILayout.FlexibleSpace();
+                    if(EditorGUI.EndChangeCheck())
+                    {
+                        changed = true;
+                    }
     
                     GUILayout.EndHorizontal();
 
@@ -85,10 +114,13 @@ public class UserInputEditor : GrendelEditor<UserInput>
 
             GUILayout.EndVertical();
 
-            Repaint();
+            if (changed)
+            {
+                Undo.RegisterSnapshot();
+                EditorUtility.SetDirty(Target);
+            }
+
         }
-
-
     }
 }
 

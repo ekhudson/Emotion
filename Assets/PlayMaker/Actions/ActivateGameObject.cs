@@ -67,7 +67,7 @@ namespace HutongGames.PlayMaker.Actions
 #if UNITY_4_0
                     SetActiveRecursively(activatedGameObject, activate.Value);
 #else
-                    activatedGameObject.SetActiveRecursively(!activate.Value);
+                    activatedGameObject.SetActive(!activate.Value);// SetActiveRecursively(!activate.Value);
 #endif
 				}
 				else

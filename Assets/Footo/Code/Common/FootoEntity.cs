@@ -81,6 +81,7 @@ public class FootoEntity : Entity
     protected override void Start()
     {
         base.Start();
+        EventManager.Instance.AddHandler<UserInputKeyEvent>(InputHandler);
     }
  
     private void SetupWeapons()
@@ -478,12 +479,7 @@ public class FootoEntity : Entity
     {
         mTarget += direction;
     }
- 
-    public void KillEntity()
-    {
-
-    }
-
+    
     void OnGUI()
     {
         if (MainCamera.Instance == null)
@@ -497,6 +493,11 @@ public class FootoEntity : Entity
         GUI.Box(new Rect(labelPos.x - 64, labelPos.y, 128, 24), mCurrentHealth.ToString());
 
         DrawWeaponInfo();
+    }
+
+    public void InputHandler(object sender, UserInputKeyEvent evt)
+    {
+
     }
 
     /// <summary>

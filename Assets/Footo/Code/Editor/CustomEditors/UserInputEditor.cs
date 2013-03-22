@@ -15,24 +15,7 @@ public class UserInputEditor : GrendelEditor<UserInput>
 
     private void OnEnable()
     {
-        //Clear the keybindings list and regather all the bindings
-        Target.KeyBindings.Clear();
-
-        System.Type myType = typeof(UserInput);
-
-        System.Reflection.FieldInfo[] myField = myType.GetFields();
-
-        for(int i = 0; i < myField.Length; i++)
-        {
-            if(myField[i].FieldType == typeof(UserInput.KeyBinding))
-            {
-                UserInput.KeyBinding binding = (UserInput.KeyBinding)myField[i].GetValue(Target);
-                if (!Target.KeyBindings.Contains(binding))
-                {
-                    Target.KeyBindings.Add(binding);
-                }
-            }
-        }
+        Target.GatherKeyBindings();
     }
 
     public override void OnInspectorGUI()
@@ -45,7 +28,6 @@ public class UserInputEditor : GrendelEditor<UserInput>
 
         foreach(UserInput.KeyBinding binding in Target.KeyBindings)
         {
-
             Undo.CreateSnapshot();
             changed = false;
 

@@ -261,7 +261,6 @@ namespace GrendelEditor.UI
                 GUI.color = Color.white;
 
                 GUILayout.EndHorizontal();
-
             }
 
             Event e = Event.current;

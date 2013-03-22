@@ -60,8 +60,6 @@ public class UserInputEditor : GrendelEditor<UserInput>
 
                      EditorGUI.BeginChangeCheck();
 
-                        //GUILayout.FlexibleSpace();
-
                         if (binding.MouseButton == UserInput.MouseButtons.None)
                         {
                             GUI.color = Color.grey;
@@ -84,7 +82,6 @@ public class UserInputEditor : GrendelEditor<UserInput>
 
                          GUI.color = Color.white;
 
-                       // GUILayout.FlexibleSpace();
                     if(EditorGUI.EndChangeCheck())
                     {
                         changed = true;

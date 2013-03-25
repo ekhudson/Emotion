@@ -204,4 +204,38 @@ public class UserInput : Singleton<UserInput>
             }
         }
     }
+
+    /// <summary>
+    /// Enables or disables a binding.
+    /// </summary>
+    /// <param name='binding'>
+    /// Binding.
+    /// </param>
+    /// <param name='enable'>
+    /// Enable (true) / Disable (false).
+    /// </param>
+    public void EnableBinding(KeyBinding binding, bool enable)
+    {
+        if(KeyBindings.Contains(binding))
+        {
+                binding.Enabled = enable;
+        }
+    }
+
+    /// <summary>
+    /// Enables or disables several bindings.
+    /// </summary>
+    /// <param name='bindings'>
+    /// Array of bindings.
+    /// </param>
+    /// <param name='enable'>
+    /// Enable (true) / Disable (false).
+    /// </param>
+    public void EnableBindings(KeyBinding[] bindings, bool enable)
+    {
+        foreach(KeyBinding binding in bindings)
+        {
+            EnableBinding(binding, enable);
+        }
+    }
 }

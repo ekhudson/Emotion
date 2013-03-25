@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(MovableObjectController))]
-public class MovableObjectEditor : GrendelEditorBase<MovableObjectController>
+public class MovableObjectEditor : GrendelEditor<MovableObjectController>
 {	
 
     private const int kStatusIndicatorWidth = 128;

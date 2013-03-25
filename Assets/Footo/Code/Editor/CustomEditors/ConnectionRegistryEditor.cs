@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(ConnectionRegistry))]
-public class ConnectionRegistryEditor : GrendelEditorBase<ConnectionRegistry> 
+public class ConnectionRegistryEditor : GrendelEditor<ConnectionRegistry>
 {	
 	private bool _drawAllConnections = false;
 	private List<EditorObjectConnection> _scrubList = new List<EditorObjectConnection>();

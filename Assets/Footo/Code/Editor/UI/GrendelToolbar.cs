@@ -11,7 +11,7 @@ public class GrendelToolbar : Editor
 	private static GUILayoutOption[] buttonSizes = new GUILayoutOption[]{ GUILayout.Width(_buttonSize), GUILayout.Height(_buttonSize) };
 	//private static GameObject _objectToPlace = null;
 	
-	[MenuItem ("Grendel/Show Toolbar")]	
+	//[MenuItem ("Grendel/Show Toolbar")] //Hiding this for now as it doesn't serve a purpose yet.
 	static void Init() 
 	{		
 		if(SceneView.onSceneGUIDelegate != OnSceneGUI)
@@ -24,6 +24,8 @@ public class GrendelToolbar : Editor
 			SceneView.onSceneGUIDelegate -= OnSceneGUI;
 			_toolbarEnabled = false;
 		}
+
+        SceneView.RepaintAll();
     }	
 	
 	static void OnSceneGUI (SceneView scnView) 

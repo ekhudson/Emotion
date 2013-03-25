@@ -36,6 +36,11 @@ public class MouseAimer : MonoBehaviour
 
     void OnDrawGizmos()
     {
+        if (!Application.isPlaying)
+        {
+            return;
+        }
+
         Gizmos.color = Color.red;
         Gizmos.DrawLine(mTrans.position, mMouseRaycastHit.point);
     }

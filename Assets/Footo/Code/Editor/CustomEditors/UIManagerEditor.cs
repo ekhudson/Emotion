@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 
 [CustomEditor(typeof(UIManager))]
-public class UIManagerEditor : GrendelEditorBase<UIManager>
+public class UIManagerEditor : GrendelEditor<UIManager>
 {	
 
 	public override void OnInspectorGUI()

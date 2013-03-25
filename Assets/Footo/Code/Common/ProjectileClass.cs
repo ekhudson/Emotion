@@ -43,7 +43,7 @@ public class ProjectileClass : MonoBehaviour
     
     private void OnCollisionEnter(Collision collision) 
     {        
-        FootoEntity DO_M = collision.gameObject.GetComponent<FootoEntity>();
+        CharacterEntity DO_M = collision.gameObject.GetComponent<CharacterEntity>();
 
         if (DO_M == null)
         {

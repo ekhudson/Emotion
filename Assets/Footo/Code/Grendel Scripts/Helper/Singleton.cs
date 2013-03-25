@@ -14,7 +14,7 @@ using System.Reflection;
 	/// 
 	/// </summary>
 
-public class Singleton<T> : MonoBehaviour where T : class
+public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 { 
 	public bool DoNotDestroyOnLoad = false;
     public bool DestroyGameObject = false;

@@ -7,7 +7,7 @@ using System.IO;
 
 public class LevelEditorWindow : EditorWindow
 {
-    [MenuItem("IWZ/Level Editor")]
+    [MenuItem("Grendel/2D Level Editor")]
     static void Init()
     {
         mWindowRef = EditorWindow.GetWindow(typeof(LevelEditorWindow));

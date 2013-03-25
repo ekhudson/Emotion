@@ -10,16 +10,14 @@ using TNet;
 /// You can see it used on draggable cubes in Example 3.
 /// </summary>
 
-public class FootoEntity : Entity
+public class FootoEntity : TNBehaviour
 {    
-   // Transform mTransform;
+   // Transform mController.BaseTransform;
     Player mOwner = null;
     Vector3 mTarget = Vector3.zero;
     Quaternion mRotTarget;
     public float MoveSpeed = 5f;
     public float RunModifier = 2f;
-    public int MaxHealth = 100;
-    //private int mCurrentHealth;
     public AnimationCurve JumpVelocityCurve;
     public float MinJumpTime = 0.25f;
     public float MaxJumpTime = 1f;
@@ -40,7 +38,7 @@ public class FootoEntity : Entity
     private PLAYERSTATES _state = PLAYERSTATES.RUNNING;
  
     private WeaponClass mCurrentWeapon;
-    private CharacterController mController;
+    private CharacterEntity mController;
     private float mCurrentStateTime = 0f;
     private Vector3 mFallSpeed = Vector3.zero;
      
@@ -56,31 +54,21 @@ public class FootoEntity : Entity
         }
     }
 
-//    public int Health
-//    {
-//        get
-//        {
-//            return mCurrentHealth;
-//        }
-//    }
-
-    protected override void Awake ()
+    protected void Awake ()
     {
-        base.Awake();
+        mController = GetComponent<CharacterEntity>();
 
-        //mTransform = transform;
-        //mTarget = mTransform.position;
-        mRotTarget = mTransform.rotation;
-        mController = GetComponent<CharacterController>();
-    
-        mCurrentHealth = MaxHealth;
-    
+        if (mController == null)
+        {
+            return;
+        }
+
+        mRotTarget = transform.rotation;
         SetupWeapons();
     }
 
-    protected override void Start()
+    protected void Start()
     {
-        base.Start();
         EventManager.Instance.AddHandler<UserInputKeyEvent>(InputHandler);
     }
  
@@ -134,7 +122,7 @@ public class FootoEntity : Entity
 
                     if(Physics.Raycast(ray,out hit,1000))
                     {
-                        Vector3 dif = hit.point - mTransform.position;
+                        Vector3 dif = hit.point - mController.BaseTransform.position;
                         dif.y = 0;
     
                         mRotTarget = Quaternion.LookRotation(dif,Vector3.up);
@@ -204,9 +192,8 @@ public class FootoEntity : Entity
                     if (renderer.enabled == false && Input.GetKeyDown(KeyCode.Space))
                     {
                         renderer.enabled = true;
-                        mCurrentHealth = MaxHealth;
                     }
-        
+
                     if (Input.GetKey(KeyCode.LeftShift))
                     {
                         mTarget *= RunModifier;
@@ -223,11 +210,11 @@ public class FootoEntity : Entity
                 {
                     case PLAYERSTATES.RUNNING:
         
-                        if (Input.GetKeyDown(KeyCode.Space) && mController.isGrounded)
+                        if (Input.GetKeyDown(KeyCode.Space) && mController.IsGrounded())
                         {
                             SetState(PLAYERSTATES.JUMPING);
                         }
-                        else if (!mController.isGrounded)
+                        else if (!mController.IsGrounded())
                         {
                             SetState(PLAYERSTATES.FALLING);
                         }
@@ -240,7 +227,7 @@ public class FootoEntity : Entity
                         {
                             mFallSpeed.y = JumpVelocityCurve.Evaluate(mCurrentStateTime);
                         }
-                        else if (Input.GetKey(KeyCode.Space) && mCurrentStateTime >= MaxJumpTime && !mController.isGrounded)
+                        else if (Input.GetKey(KeyCode.Space) && mCurrentStateTime >= MaxJumpTime && !mController.IsGrounded())
                         {
                             SetState(PLAYERSTATES.FALLING);
                         }
@@ -248,7 +235,7 @@ public class FootoEntity : Entity
                         {
                             SetState(PLAYERSTATES.FALLING);
                         }
-                        else if (mController.isGrounded)
+                        else if (mController.IsGrounded())
                         {
                             SetState(PLAYERSTATES.RUNNING);
                         }
@@ -257,11 +244,11 @@ public class FootoEntity : Entity
     
                     case PLAYERSTATES.FALLING:
         
-                        if (!mController.isGrounded)
+                        if (!mController.IsGrounded())
                         {
                             mFallSpeed += Physics.gravity * Time.deltaTime;
                         }
-                        else if (mController.isGrounded)
+                        else if (mController.IsGrounded())
                         {
                             SetState(PLAYERSTATES.RUNNING);
                         }
@@ -274,7 +261,7 @@ public class FootoEntity : Entity
     
                 mCurrentStateTime += Time.deltaTime;
         
-                tno.SendQuickly(3, Target.OthersSaved, mTransform.position);
+                tno.SendQuickly(3, Target.OthersSaved, mController.BaseTransform.position);
                 tno.SendQuickly(4, Target.OthersSaved, mRotTarget);
 
             }
@@ -286,8 +273,13 @@ public class FootoEntity : Entity
 
     public void UpdatePosition()
     {
+        if (mController == null)
+        {
+            return;
+        }
+
         mController.Move( (mTarget * MoveSpeed) * Time.deltaTime);
-        mTransform.rotation = Quaternion.Lerp(mTransform.rotation, mRotTarget, Time.deltaTime * 20f);
+        mController.BaseTransform.rotation = Quaternion.Lerp(mController.BaseTransform.rotation, mRotTarget, Time.deltaTime * 20f);
 
         mTarget = Vector3.zero;
     }
@@ -450,30 +442,12 @@ public class FootoEntity : Entity
     public void ClaimObject (int playerID, Vector3 pos)
     {
         mOwner = TNManager.GetPlayer(playerID);
-        mTransform.position = pos;
+        mController.BaseTransform.position = pos;
         mTarget = pos;
         
         // Move the object to the Ignore Raycast layer while it's being dragged
         gameObject.layer = LayerMask.NameToLayer((mOwner != null) ? "Ignore Raycast" : "Default");
     }
- 
- /// <summary>
- /// Updates the health. Pass negative values to "damage" the entity
- /// </summary>
- /// <param name='updateValue'>
- /// Update value.
- /// </param>
-//    public void UpdateHealth(object sender, int updateValue, HealthUpdateType.HealthUpdateTypes type)
-//    {       
-//        mCurrentHealth = Mathf.Clamp(mCurrentHealth + updateValue, 0, MaxHealth);
-//    
-//        EventManager.Instance.Post(new HealthUpdateEvent(sender, type, updateValue, mCurrentHealth, transform.position));
-//
-//        if (mCurrentHealth <= 0)
-//        {
-//            KillEntity();
-//        }
-//    }
 
     public void MoveEntity(Vector3 direction)
     {
@@ -482,7 +456,7 @@ public class FootoEntity : Entity
     
     void OnGUI()
     {
-        if (MainCamera.Instance == null)
+        if (MainCamera.Instance == null || mController == null)
         {
             return;
         }
@@ -490,7 +464,7 @@ public class FootoEntity : Entity
         Vector3 labelPos = MainCamera.Instance.camera.WorldToScreenPoint(transform.position);
         labelPos.y = Screen.height - labelPos.y;
         labelPos.y -= 72f;
-        GUI.Box(new Rect(labelPos.x - 64, labelPos.y, 128, 24), mCurrentHealth.ToString());
+        GUI.Box(new Rect(labelPos.x - 64, labelPos.y, 128, 24), mController.Health.ToString());
 
         DrawWeaponInfo();
     }
@@ -504,8 +478,8 @@ public class FootoEntity : Entity
     /// Save the target position.
     /// </summary>
     
-    [RFC(3)] void MoveObject (Vector3 pos) { mTransform.position = pos; }
+    [RFC(3)] void MoveObject (Vector3 pos) { mController.BaseTransform.position = pos; }
     [RFC(4)] void RotateObject (Quaternion rot) { mRotTarget = rot; }
-    [RFC(5)] void UpdateHealthOverNetwork(int health) { mCurrentHealth = health; }
+    [RFC(5)] void UpdateHealthOverNetwork(int health) { mController.Health = health; }
  
 }

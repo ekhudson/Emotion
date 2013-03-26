@@ -61,7 +61,7 @@ public class ScreenNotificationManager : Singleton<ScreenNotificationManager>
 				//_currentNotification.DisplayNotification();
 				foreach(ScreenNotification notification in NotificationList)
 				{
-					GUILayout.Label(notification.Text, notification.NotificationStyle, GUILayout.Width( (Screen.width * 0.25f) ));
+					GUILayout.Label(notification.Text, notification.NotificationStyle, GUILayout.Width(Screen.width));
 				}
 				
 			}

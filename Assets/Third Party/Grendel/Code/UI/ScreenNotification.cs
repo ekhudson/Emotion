@@ -24,7 +24,7 @@ public class ScreenNotification
 	private Texture2D _defaultTexture;
 	private Color _defaultBoxColor = new Color(0.25f, 0.25f, 0.25f, 0.75f);
 	private string _textToShow = "";
-	private Rect _notificationBox = new Rect(10f,10f, (Screen.width * 0.25f), 25f);
+	private Rect _notificationBox = new Rect(10f,10f, (Screen.width), 25f);
 	private GUIStyle _styleToUse;
 	
 	public float HoldTime

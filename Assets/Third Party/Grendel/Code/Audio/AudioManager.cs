@@ -40,7 +40,7 @@ public class AudioManager : Singleton<AudioManager>
 	void Update () 
 	{
 		//not sure if I need this yet
-        transform.position = MainCamera.Instance.transform.position;
+        //transform.position = MainCamera.Instance.transform.position;
 	}
 	
 	public void VolumeUp()

@@ -15,14 +15,7 @@ public class OrbitScript : MonoBehaviour
     public SatteliteObjects[] Sattelites;
     public Transform OrbitPoint;
 
-	// Use this for initialization
-	void Start ()
-    {
-	
-	}
-	
-	// Update is called once per frame
-	void Update ()
+    void Update ()
     {
         int direction = 1;
         foreach(SatteliteObjects sat in Sattelites)

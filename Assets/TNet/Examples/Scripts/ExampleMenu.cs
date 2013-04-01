@@ -248,9 +248,9 @@ public class ExampleMenu : MonoBehaviour
 				
 				GameObject tempChannelObject = NGUITools.AddChild(go_channelParent,go_ChannelBtn);
 				NGUIchannelBtnList.Add(tempChannelObject);
-				
+
 				ChannelBtn tempCB = tempChannelObject.GetComponent<ChannelBtn>();
-				
+
 				tempCB.em_CB_Ref = this;
 				tempCB.uil_channelName.text = sceneName;
 				tempCB.i = i;
@@ -368,19 +368,22 @@ public class ExampleMenu : MonoBehaviour
 
 	void OnNetworkConnect (bool success, string message) 
 	{
-		
+		Debug.Log(string.Format("Success {0}, Message {1}", success.ToString(), message));
 		if(success)
 		{
 			NGUITools.SetActive(go_MainMenu,false);
 			NGUITools.SetActive(go_OptionsMenu,true);
-			//NGUITools.SetActive(go_Disconnectbtn,false);
-					
+			////NGUITools.SetActive(go_Disconnectbtn,false);
+
 			NGUITools.SetActive(go_channelParent,true);
 			channelSelection();
 		}
-
-		mMessage = message;
-		setMessage(mMessage);
+//
+        if (message != null)
+        {
+		    mMessage = message;
+		    setMessage(mMessage);
+        }
 	}
 
 	/// <summary>

@@ -19,7 +19,7 @@ public class LevelManager : Singleton<LevelManager>
 
     protected override void Awake()
     {
-        if (_instance)
+        if (mInstance)
         {
             AudioManager.Instance.PlayMusicTrack(BackgroundMusicTrack);
         }
@@ -66,8 +66,7 @@ public class LevelManager : Singleton<LevelManager>
 		{			
 			StartCoroutine("LevelLoading");
 			//GameManager.Instance.SetGameState(GameManager.GAMESTATE.LOADING);
-			Application.LoadLevel(sceneName);			
-			
+			Application.LoadLevel(sceneName);
 			
 		}
 		catch

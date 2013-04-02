@@ -18,10 +18,10 @@ public class MainCamera : Singleton<MainCamera>
 
     protected override void Awake()
     {
-        if (_instance != null)
+        if (mInstance != null)
         {
-            _instance.transform.position = transform.position;
-            _instance.transform.rotation = transform.rotation;
+            mInstance.transform.position = transform.position;
+            mInstance.transform.rotation = transform.rotation;
         }
 
         base.Awake();

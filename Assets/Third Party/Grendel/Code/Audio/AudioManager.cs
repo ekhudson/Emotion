@@ -93,7 +93,7 @@ public class AudioManager : Singleton<AudioManager>
 		
 		try
 		{
-			source.Play(1000);
+			source.Play();
 			Console.Instance.OutputToConsole("AudioManager: Playing Music Track: " + musicTrack.name, Console.Instance.Style_Admin);
 		}
 		catch

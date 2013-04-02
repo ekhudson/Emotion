@@ -28,7 +28,7 @@ public class AudioManagerEditor : Editor {
 	{			
 		//string[] filePaths = Directory.GetFiles(Application.dataPath + "/Audio/Music/","*.mp3");
 		//Object[] musicFiles = AssetDatabase.LoadAllAssetsAtPath("Assets/Audio/Music/");	
-		FileInfo[] ScenesFileInfo = (new DirectoryInfo(Application.dataPath + "/Audio/Music/")).GetFiles("*.mp3", SearchOption.AllDirectories);
+		FileInfo[] ScenesFileInfo = (new DirectoryInfo(Application.dataPath + "/Content/Audio/Music/")).GetFiles("*.mp3", SearchOption.AllDirectories);
 		
 		
 		//if (musicFiles != null)

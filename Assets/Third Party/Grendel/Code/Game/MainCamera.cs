@@ -43,7 +43,7 @@ public class MainCamera : Singleton<MainCamera>
 
         if (NetworkManager.Instance == null && Application.isEditor && mLocalPlayer == null)
         {
-            GameObject tempPlayer = (GameObject)GameObject.Instantiate(PlayerPrefab, new Vector3(0,2,0), Quaternion.identity);
+            GameObject tempPlayer = (GameObject)GameObject.Instantiate(PlayerPrefab, new Vector3(0,4,0), Quaternion.identity);
             mLocalPlayer = tempPlayer.GetComponent<FootoEntity>();
             mLocalPlayer.Owner = new TNet.Player("TempPlayer");
 

@@ -6,12 +6,23 @@ public class CharacterEntity : Entity
 {
     public float SkinWidth = 0.01f;
     public float StepOffset = 0.35f;
-    public float MinMoveAmount = 0f;
+    public float MinMoveAmount = 0.1f;
     private Vector3 mCurrentMove = Vector3.zero;
+    private bool mIsGrounded = false;
+
+
+    public bool IsGrounded
+    {
+        get
+        {
+            return mIsGrounded;
+        }
+    }
 
     protected override void Awake()
     {
         base.Awake();
+        mRigidbody.isKinematic = false;
     }
 
     // Use this for initialization
@@ -23,40 +34,39 @@ public class CharacterEntity : Entity
     // Update is called once per frame
     private void FixedUpdate ()
     {
-        if(IsGrounded())
+        if (!mIsGrounded)
         {
-            mRigidbody.isKinematic = true;
-        }
-        else
-        {
-            mRigidbody.isKinematic = false;
+            CheckIfGrounded();
         }
 
-         mTransform.Translate(mCurrentMove, Space.World);
+        mTransform.Translate(mCurrentMove, Space.World);
+
+        mCurrentMove *= mRigidbody.drag;
     }
 
     public void Move(Vector3 amount)
     {
-        amount.x = Mathf.Round(amount.x);
-        amount.y = Mathf.Round(amount.y);
-        amount.z = Mathf.Round(amount.z);
+        amount.x = amount.x;
+        amount.y = amount.y;
+        amount.z = amount.z;
 
-        mCurrentMove = amount;
+        mCurrentMove += amount;
     }
 
-    public bool IsGrounded()
+    public void CheckIfGrounded()
     {
-        Ray ray = new Ray(mTransform.position - new Vector3(0, mCollider.bounds.size.y * 0.5f, 0), Vector3.down);
+        Ray ray = new Ray(mTransform.position, -mTransform.up);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, SkinWidth))
+        if (Physics.Raycast(ray, out hit, (mCollider.bounds.size.y * 0.5f) + SkinWidth))
         {
-            return true;
+            mIsGrounded = true;
         }
-        else
-        {
-            return false;
-        }
+    }
+
+    public void OnCollisionExit(Collision collisionInfo)
+    {
+        mIsGrounded = false;
     }
 
     private void OnDrawGizmosSelected()
@@ -66,6 +76,6 @@ public class CharacterEntity : Entity
             return;
         }
 
-        Debug.DrawRay(mTransform.position - new Vector3(0, mCollider.bounds.size.y * 0.5f, 0), Vector3.down, Color.yellow, SkinWidth);
+        Debug.DrawLine(mTransform.position - new Vector3(0, mCollider.bounds.size.y * 0.5f, 0), mTransform.position - new Vector3(0, (mCollider.bounds.size.y * 0.5f) + SkinWidth, 0), Color.yellow);
     }
 }

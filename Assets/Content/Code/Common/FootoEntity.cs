@@ -210,11 +210,11 @@ public class FootoEntity : TNBehaviour
                 {
                     case PLAYERSTATES.RUNNING:
         
-                        if (Input.GetKeyDown(KeyCode.Space) && mController.IsGrounded())
+                        if (Input.GetKeyDown(KeyCode.Space) && mController.IsGrounded)
                         {
                             SetState(PLAYERSTATES.JUMPING);
                         }
-                        else if (!mController.IsGrounded())
+                        else if (!mController.IsGrounded)
                         {
                             SetState(PLAYERSTATES.FALLING);
                         }
@@ -225,9 +225,9 @@ public class FootoEntity : TNBehaviour
     
                         if (mCurrentStateTime < MinJumpTime)
                         {
-                            mFallSpeed.y = JumpVelocityCurve.Evaluate(mCurrentStateTime);
+                            mTarget.y = JumpVelocityCurve.Evaluate(mCurrentStateTime);
                         }
-                        else if (Input.GetKey(KeyCode.Space) && mCurrentStateTime >= MaxJumpTime && !mController.IsGrounded())
+                        else if (Input.GetKey(KeyCode.Space) && mCurrentStateTime >= MaxJumpTime && !mController.IsGrounded)
                         {
                             SetState(PLAYERSTATES.FALLING);
                         }
@@ -235,7 +235,7 @@ public class FootoEntity : TNBehaviour
                         {
                             SetState(PLAYERSTATES.FALLING);
                         }
-                        else if (mController.IsGrounded())
+                        else if (mController.IsGrounded)
                         {
                             SetState(PLAYERSTATES.RUNNING);
                         }
@@ -244,11 +244,11 @@ public class FootoEntity : TNBehaviour
     
                     case PLAYERSTATES.FALLING:
         
-                        if (!mController.IsGrounded())
+                        if (!mController.IsGrounded)
                         {
-                            mFallSpeed += Physics.gravity * Time.deltaTime;
+
                         }
-                        else if (mController.IsGrounded())
+                        else if (mController.IsGrounded)
                         {
                             SetState(PLAYERSTATES.RUNNING);
                         }

@@ -368,7 +368,6 @@ public class ExampleMenu : MonoBehaviour
 
 	void OnNetworkConnect (bool success, string message) 
 	{
-		Debug.Log(string.Format("Success {0}, Message {1}", success.ToString(), message));
 		if(success)
 		{
 			NGUITools.SetActive(go_MainMenu,false);

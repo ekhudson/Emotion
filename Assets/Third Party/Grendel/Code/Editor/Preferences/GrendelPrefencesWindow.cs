@@ -16,5 +16,7 @@ public class GrendelPrefencesWindow
 		{
 			SceneView.currentDrawingSceneView.Repaint(); 
 		}
+
+        GrendelEditorPreferences.AskToLoadStartupScene = GUILayout.Toggle(GrendelEditorPreferences.AskToLoadStartupScene, new GUIContent("Ask To Load Default Scene", "When playing in the Editor, always ask to load the default scene if it's not the current scene"));
 	}
 }

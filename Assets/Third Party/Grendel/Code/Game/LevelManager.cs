@@ -61,13 +61,19 @@ public class LevelManager : Singleton<LevelManager>
         }
         
         Console.Instance.OutputToConsole(string.Format("{0}: Loading scene {1}.", this.ToString(), sceneName), Console.Instance.Style_Admin);        
-        
+
+//        GameManager.Instance.SetGameState(GameManager.GameStates.STATES.LOADING);
+
+        StartCoroutine("LevelLoading");
+
         try
         {            
-            StartCoroutine("LevelLoading");
+           // GameManager.Instance.SetGameState(GameManager.GameStates.STATES.LOADING);
+           // StartCoroutine("LevelLoading");
+
             //GameManager.Instance.SetGameState(GameManager.GAMESTATE.LOADING);
             Application.LoadLevel(sceneName);
-            
+
         }
         catch
         {
@@ -75,20 +81,22 @@ public class LevelManager : Singleton<LevelManager>
         }
     }
     
-    IEnumerable LevelLoading()
+    IEnumerator LevelLoading()
     {
         double time = Time.realtimeSinceStartup;
-        
-                
-        GameManager.Instance.SetGameState(GameManager.GameStates.STATES.LOADING);            
-        
-        
+
+
         while(Application.isLoadingLevel)
         {
-            
+            yield return new WaitForSeconds(0.01f);
+            if (GameManager.Instance != null && GameManager.Instance.GameState != GameManager.GameStates.STATES.LOADING)
+            {
+                GameManager.Instance.SetGameState(GameManager.GameStates.STATES.LOADING);
+            }
         }
+
         time = Time.realtimeSinceStartup - time;
         Console.Instance.OutputToConsole(string.Format("{0}: Scene {1} loaded in {2} seconds.", this.ToString(), Application.loadedLevelName, time.ToString()), Console.Instance.Style_Admin);    
-        return null;
+        yield return null;
     }
 }

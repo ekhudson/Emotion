@@ -20,11 +20,12 @@ public class GameManager : Singleton<GameManager>
     public string ApplicationTitle = "Grendel";
     public string ApplicationVersion = "1.0";
     public bool DebugBuild = true;
-    [SerializeField]
-    public UnityEngine.Object SceneToLoadOnGameLaunch;
-    public UnityEngine.Object MainMenuScene;
+
+    [SerializeField]public UnityEngine.Object SceneToLoadOnGameLaunch;
+    [SerializeField]public UnityEngine.Object MainMenuScene;
 	
-	private static bool FirstTimeLoaded = true; //is this the very first time this script was loaded? 
+	private static bool mFirstTimeLoaded = true; //is this the very first time this script was loaded?
+    [HideInInspector]public bool LoadDefaultScene; //are we supposed to load the default scene?
     
     public static class GameStates
     {
@@ -44,7 +45,7 @@ public class GameManager : Singleton<GameManager>
     
     #region PRIVATE VARIABLES
     
-    private GameStates.STATES mGameState = GameStates.STATES.BOOTUP;
+    private GameStates.STATES mGameState;
     
     #endregion
     
@@ -57,16 +58,15 @@ public class GameManager : Singleton<GameManager>
 
     protected override void Awake()
     {
-        if (FirstTimeLoaded)
+        if (mFirstTimeLoaded)
         {
             Console.Instance.OutputToConsole(string.Format("{0}: Starting up {1} {2}",  this.ToString(), ApplicationTitle, ApplicationVersion), Console.Instance.Style_Admin);
-    
-            if (mGameState == GameStates.STATES.BOOTUP)
-            {
-                  BootupSequence();
-            }
-			
-			FirstTimeLoaded = false;
+
+            mGameState = GameStates.STATES.BOOTUP;
+
+            BootupSequence();
+
+			mFirstTimeLoaded = false;
         }
 
         base.Awake();
@@ -75,12 +75,7 @@ public class GameManager : Singleton<GameManager>
     // Use this for initialization
     protected virtual void Start ()
     {
-//        Console.Instance.OutputToConsole(string.Format("{0}: Starting up {1} {2}",  this.ToString(), ApplicationTitle, ApplicationVersion), Console.Instance.Style_Admin);
-//
-//        if (mGameState == GameStates.STATES.BOOTUP)
-//        {
-//              BootupSequence();
-//        }
+
     }
 
     protected virtual void Update()
@@ -514,8 +509,8 @@ public class GameManager : Singleton<GameManager>
     }
 
     private void LaunchDefaultStartScene()
-    {        
-        if(mGameState == GameStates.STATES.BOOTUP && SceneToLoadOnGameLaunch != null && Application.loadedLevelName != SceneToLoadOnGameLaunch.name)
+    {
+        if(mGameState == GameStates.STATES.BOOTUP && SceneToLoadOnGameLaunch != null && Application.loadedLevelName != SceneToLoadOnGameLaunch.name && LoadDefaultScene)
         {
             Console.Instance.OutputToConsole(string.Format("{0}: Supposed to start up in Scene {1}, but this is Scene {2}",  this.ToString(), SceneToLoadOnGameLaunch.name, Application.loadedLevel), Console.Instance.Style_Admin);
           

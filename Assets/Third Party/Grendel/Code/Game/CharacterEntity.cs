@@ -46,10 +46,6 @@ public class CharacterEntity : Entity
 
     public void Move(Vector3 amount)
     {
-        amount.x = amount.x;
-        amount.y = amount.y;
-        amount.z = amount.z;
-
         mCurrentMove += amount;
     }
 

@@ -29,12 +29,7 @@ public class ProjectileClass : MonoBehaviour
         mCurrentLifetime += Time.deltaTime;
 
         mRigidBody.velocity = mTrans.forward * ProjectileSpeedOverLife.Evaluate(mCurrentLifetime / Lifetime);
-        
-        //mTrans.position = mTarget;
-        
-        //mTarget = (mTrans.position) + ((mTrans.forward * ProjectileSpeedOverLife.Evaluate(mCurrentLifetime / Lifetime)) * Time.deltaTime);
-        //mTNObject.SendQuickly(5, Target.OthersSaved, mTarget);
-        
+
         if (mCurrentLifetime >= Lifetime)
         {
             TNManager.Destroy(gameObject);

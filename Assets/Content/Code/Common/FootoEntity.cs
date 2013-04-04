@@ -5,11 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TNet;
 
-/// <summary>
-/// This script shows how it's possible to associate objects with players.
-/// You can see it used on draggable cubes in Example 3.
-/// </summary>
-
 public class FootoEntity : TNBehaviour
 {    
    // Transform mController.BaseTransform;
@@ -401,19 +396,18 @@ public class FootoEntity : TNBehaviour
         }
 
         float kHeight = 64;
-        float kWidth = 128;
+        float kWidth = 512;
 
-        GUILayout.BeginArea(new Rect(0, Screen.height - kHeight, Screen.width, kHeight));
+        GUILayout.BeginArea(new Rect(8, Screen.height - kHeight, Screen.width, 24));
 
         GUILayout.BeginVertical();
             GUILayout.BeginHorizontal();
 
-                GUILayout.Label(string.Format("Current Weapons: {0} | {1} / {2}", mCurrentWeapon.name, mCurrentWeapon.CurrentClipSize, mCurrentWeapon.ClipSize));
+                GUILayout.Label(string.Format("Current Weapon: {0} | {1} / {2}", mCurrentWeapon.ShortName, mCurrentWeapon.CurrentClipSize, mCurrentWeapon.ClipSize), GUI.skin.box);
 
                 if (mCurrentWeapon.WeaponState == WeaponClass.WEAPON_STATES.RELOADING)
                 {
                     GUILayout.Box("Reloading", GUILayout.Width(kWidth));
-
 
                     Rect rect = GUILayoutUtility.GetLastRect();
 
@@ -464,7 +458,9 @@ public class FootoEntity : TNBehaviour
         Vector3 labelPos = MainCamera.Instance.camera.WorldToScreenPoint(transform.position);
         labelPos.y = Screen.height - labelPos.y;
         labelPos.y -= 72f;
-        GUI.Box(new Rect(labelPos.x - 64, labelPos.y, 128, 24), mController.Health.ToString());
+
+
+        GUI.Box(new Rect(8, Screen.height - 32, 128, 24), mController.Health.ToString());
 
         DrawWeaponInfo();
     }

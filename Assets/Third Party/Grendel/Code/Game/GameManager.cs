@@ -23,6 +23,8 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     public UnityEngine.Object SceneToLoadOnGameLaunch;
     public UnityEngine.Object MainMenuScene;
+	
+	private static bool FirstTimeLoaded = true; //is this the very first time this script was loaded? 
     
     public static class GameStates
     {
@@ -55,7 +57,7 @@ public class GameManager : Singleton<GameManager>
 
     protected override void Awake()
     {
-        if (mInstance == null)
+        if (FirstTimeLoaded)
         {
             Console.Instance.OutputToConsole(string.Format("{0}: Starting up {1} {2}",  this.ToString(), ApplicationTitle, ApplicationVersion), Console.Instance.Style_Admin);
     
@@ -63,6 +65,8 @@ public class GameManager : Singleton<GameManager>
             {
                   BootupSequence();
             }
+			
+			FirstTimeLoaded = false;
         }
 
         base.Awake();
@@ -510,15 +514,18 @@ public class GameManager : Singleton<GameManager>
     }
 
     private void LaunchDefaultStartScene()
-    {
-        Debug.Log("Default");
+    {        
         if(mGameState == GameStates.STATES.BOOTUP && SceneToLoadOnGameLaunch != null && Application.loadedLevelName != SceneToLoadOnGameLaunch.name)
         {
             Console.Instance.OutputToConsole(string.Format("{0}: Supposed to start up in Scene {1}, but this is Scene {2}",  this.ToString(), SceneToLoadOnGameLaunch.name, Application.loadedLevel), Console.Instance.Style_Admin);
-            //Application.LoadLevel(SceneToLoadOnGameLaunch.name);
-            mGameState = GameStates.STATES.LOADING;
+          
+            SetGameState(GameStates.STATES.LOADING);
             LevelManager.Instance.LoadLevel(SceneToLoadOnGameLaunch.name);
         }
+		else if (mGameState == GameStates.STATES.BOOTUP)
+		{
+			SetGameState(GameStates.STATES.LOADING);
+		}
     }
 
     private bool ComponentsLoaded()

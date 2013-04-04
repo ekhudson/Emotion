@@ -112,7 +112,7 @@ public class ConsoleCommandList : Singleton<ConsoleCommandList>
 	
 	void OutputLog(ConsoleCommandParams parameters)
 	{		
-		ConsoleLog.OutputLog(Console.Instance.ConsoleLineList, System.DateTime.Now.ToString("yymmdd HHmmss"));	
+		ConsoleLog.OutputLog(Console.ConsoleLineList, System.DateTime.Now.ToString("yymmdd HHmmss"));	
 	}
 	
 	void ShowCommands(ConsoleCommandParams parameters)

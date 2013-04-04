@@ -38,7 +38,7 @@ public class Console : Singleton<Console>
     #endregion
 
     #region PUBLIC VARIABLES        
-    public List<ConsoleLine> ConsoleLineList = new List<ConsoleLine>(0); //list of previous console commands
+    public static List<ConsoleLine> ConsoleLineList = new List<ConsoleLine>(0); //list of previous console commands
     public int NumberOfCommandsToShow = 16; //number of previous commands to show
     public float ConsoleHeight = 400;
     public bool PauseGameWhenOpen = false;

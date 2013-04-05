@@ -157,7 +157,7 @@ public class WeaponClass : ItemClass
             tempAudioSource.AddComponent<AudioSource>();
             tempAudioSource.audio.playOnAwake = false;
             tempAudioSource.name = "[SFX] - " + adjustableClip.Clip.name;
-            tempAudioSource.transform.parent = MainCamera.Instance.transform;
+            tempAudioSource.transform.parent = AudioManager.Instance.transform;
             tempAudioSource.transform.localPosition = Vector3.zero;
             tempAudioSource.audio.clip = adjustableClip.Clip;
             tempAudioSource.audio.pitch = adjustableClip.Pitch;

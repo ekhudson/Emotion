@@ -18,7 +18,7 @@ using System.Collections;
     /// 
     /// </summary>
 
-public class BaseObject : TNBehaviour
+public class BaseObject : MonoBehaviour
 {
     //PUBLIC VARIABLES
     public bool DebugMode = false;

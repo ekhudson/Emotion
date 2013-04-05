@@ -122,26 +122,26 @@ public class FootoEntity : TNBehaviour
     
                         mRotTarget = Quaternion.LookRotation(dif,Vector3.up);
                     }
-
-                    if(Input.GetKey(KeyCode.A))
-                    {
-                        mTarget += (new Vector3(-1 , 0 , 0));
-                    }
-            
-                    if(Input.GetKey(KeyCode.D))
-                    {
-                        mTarget += (new Vector3(1, 0, 0));
-                    }
-            
-                    if(Input.GetKey(KeyCode.W))
-                    {
-                        mTarget += (new Vector3(0, 0 , 1));
-                    }
-            
-                    if(Input.GetKey(KeyCode.S))
-                    { 
-                        mTarget += (new Vector3(0, 0 , -1));
-                    }
+//
+//                    if(Input.GetKey(KeyCode.A))
+//                    {
+//                        mTarget += (new Vector3(-1 , 0 , 0));
+//                    }
+//
+//                    if(Input.GetKey(KeyCode.D))
+//                    {
+//                        mTarget += (new Vector3(1, 0, 0));
+//                    }
+//
+//                    if(Input.GetKey(KeyCode.W))
+//                    {
+//                        mTarget += (new Vector3(0, 0 , 1));
+//                    }
+//
+//                    if(Input.GetKey(KeyCode.S))
+//                    {
+//                        mTarget += (new Vector3(0, 0 , -1));
+//                    }
     
                     if(Input.GetKeyDown(KeyCode.R))
                     {
@@ -184,10 +184,10 @@ public class FootoEntity : TNBehaviour
                         }
                     }
                 
-                    if (renderer.enabled == false && Input.GetKeyDown(KeyCode.Space))
-                    {
-                        renderer.enabled = true;
-                    }
+//                    if (renderer.enabled == false && Input.GetKeyDown(KeyCode.Space))
+//                    {
+//                        renderer.enabled = true;
+//                    }
 
                     if (Input.GetKey(KeyCode.LeftShift))
                     {
@@ -199,6 +199,10 @@ public class FootoEntity : TNBehaviour
                             Weapons[1].StopFiring();
                         }
                     }
+                }
+                else if (mController.enabled)
+                {
+                    mController.enabled = false;
                 }
 
                 switch(_state)
@@ -273,7 +277,9 @@ public class FootoEntity : TNBehaviour
             return;
         }
 
-        mController.Move( (mTarget * MoveSpeed) * Time.deltaTime);
+        Vector3 norm = mTarget.normalized;
+
+        mController.Move( ((new Vector3(norm.x, 0, norm.z) * MoveSpeed) + new Vector3(0, mTarget.y, 0)) * Time.deltaTime);
         mController.BaseTransform.rotation = Quaternion.Lerp(mController.BaseTransform.rotation, mRotTarget, Time.deltaTime * 20f);
 
         mTarget = Vector3.zero;
@@ -467,14 +473,32 @@ public class FootoEntity : TNBehaviour
 
     public void InputHandler(object sender, UserInputKeyEvent evt)
     {
+        if(evt.KeyBind == UserInput.Instance.MoveLeft && (evt.Type == UserInputKeyEvent.TYPE.KEYDOWN || evt.Type == UserInputKeyEvent.TYPE.KEYHELD))
+        {
+            mTarget += (new Vector3(-1 , 0 , 0));
+        }
 
+        if(evt.KeyBind == UserInput.Instance.MoveRight && (evt.Type == UserInputKeyEvent.TYPE.KEYDOWN || evt.Type == UserInputKeyEvent.TYPE.KEYHELD))
+        {
+            mTarget += (new Vector3(1, 0, 0));
+        }
+
+        if(evt.KeyBind == UserInput.Instance.MoveUp && (evt.Type == UserInputKeyEvent.TYPE.KEYDOWN || evt.Type == UserInputKeyEvent.TYPE.KEYHELD))
+        {
+            mTarget += (new Vector3(0, 0 , 1));
+        }
+
+        if(evt.KeyBind == UserInput.Instance.MoveDown && (evt.Type == UserInputKeyEvent.TYPE.KEYDOWN || evt.Type == UserInputKeyEvent.TYPE.KEYHELD))
+        {
+            mTarget += (new Vector3(0, 0 , -1));
+        }
     }
 
     /// <summary>
     /// Save the target position.
     /// </summary>
     
-    [RFC(3)] void MoveObject (Vector3 pos) { mController.BaseTransform.position = pos; }
+    [RFC(3)] void MoveObject (Vector3 pos) {  transform.position = pos; }
     [RFC(4)] void RotateObject (Quaternion rot) { mRotTarget = rot; }
     [RFC(5)] void UpdateHealthOverNetwork(int health) { mController.Health = health; }
  

@@ -11,6 +11,11 @@ public class GameManagerEditor : GrendelEditor<GameManager>
 	{
         GameManager target = (GameManager)GameObject.FindObjectOfType(typeof(GameManager));
 
+        if (target == null)
+        {
+            return;
+        }
+
         if (!EditorApplication.isPlaying && EditorApplication.isPlayingOrWillChangePlaymode)
         {
             if (target.SceneToLoadOnGameLaunch != null && EditorApplication.currentScene != target.SceneToLoadOnGameLaunch.name && GrendelEditorPreferences.AskToLoadStartupScene)

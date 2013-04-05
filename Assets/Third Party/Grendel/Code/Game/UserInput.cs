@@ -15,6 +15,8 @@ public class UserInput : Singleton<UserInput>
         public MouseButtons AltMouseButton = UserInput.MouseButtons.None;
         public List<UserInput.KeyBinding> Conflicts = new List<UserInput.KeyBinding>(); //TODO: Figure out the most efficient way to update keybind conflicts
 
+        private bool mIsDown = false;
+
         public KeyBinding(string bindingName, KeyCode key, KeyCode altKey, MouseButtons mouseButton, MouseButtons altMouseButton)
         {
             BindingName = bindingName;
@@ -22,6 +24,18 @@ public class UserInput : Singleton<UserInput>
             AltKey = altKey;
             MouseButton = mouseButton;
             AltMouseButton = altMouseButton;
+        }
+
+        public bool IsDown
+        {
+            get
+            {
+                return mIsDown;
+            }
+            set
+            {
+                mIsDown = value;
+            }
         }
     }
 
@@ -52,12 +66,15 @@ public class UserInput : Singleton<UserInput>
 
     private Dictionary<KeyCode, List<KeyBinding>> mKeyBindingsDictionary = new Dictionary<KeyCode, List<KeyBinding>>();
     private Dictionary<MouseButtons, List<KeyBinding>> mMouseBindingsDictionary = new Dictionary<MouseButtons, List<KeyBinding>>();
+
+    private List<KeyBinding> mKeysDown = new List<KeyBinding>();
     
     // Use this for initialization
     private void Start ()
     {
         GatherKeyBindings();
         StoreKeyBindings();
+        mKeysDown.Clear();
     }
 
     //Find all the KeyBindings on UserInput
@@ -164,25 +181,25 @@ public class UserInput : Singleton<UserInput>
         {
             if(GameOptions.Instance.DebugMode){ Console.Instance.ToggleConsole(); }
         }
+
+        foreach(KeyBinding binding in mKeysDown)
+        {
+            EventManager.Instance.Post(new UserInputKeyEvent(UserInputKeyEvent.TYPE.KEYHELD, binding, Vector3.zero, this));
+        }
     }
 
     private void OnGUI()
     {
         Event e = Event.current;
 
-        if (e.keyCode != KeyCode.None)
+        if (e.isKey && e.keyCode != KeyCode.None)
         {
-            if (Input.GetKeyDown(e.keyCode))
+            if(e.type == EventType.KeyDown)
             {
                 ProcessKeycode(e.keyCode, UserInputKeyEvent.TYPE.KEYDOWN);
             }
 
-            if (Input.GetKey(e.keyCode))
-            {
-                ProcessKeycode(e.keyCode, UserInputKeyEvent.TYPE.KEYHELD);
-            }
-
-            if (Input.GetKeyUp(e.keyCode))
+            if(e.type == EventType.KeyUp)
             {
                 ProcessKeycode(e.keyCode, UserInputKeyEvent.TYPE.KEYUP);
             }
@@ -201,6 +218,25 @@ public class UserInput : Singleton<UserInput>
             if (binding.Enabled)
             {
                 EventManager.Instance.Post(new UserInputKeyEvent(inputType, binding, Vector3.zero, this));
+
+                if (inputType == UserInputKeyEvent.TYPE.KEYDOWN)
+                {
+                    binding.IsDown = true;
+
+                    if (!mKeysDown.Contains(binding))
+                    {
+                        mKeysDown.Add(binding);
+                    }
+                }
+                else if (inputType == UserInputKeyEvent.TYPE.KEYUP)
+                {
+                    binding.IsDown = false;
+
+                    if (mKeysDown.Contains(binding))
+                    {
+                        mKeysDown.Remove(binding);
+                    }
+                }
             }
         }
     }

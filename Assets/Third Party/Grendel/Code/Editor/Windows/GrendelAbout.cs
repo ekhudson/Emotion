@@ -7,7 +7,7 @@ public class GrendelAbout : EditorWindow
 {
     private const string kAboutWindowTitle = "About Grendel";
     private static Rect kAboutPosition = new Rect(64f, 64f, 128f, 128f);
-    private static Vector2 kAboutSize = new Vector2(160f, 256f);
+    private static Vector2 kAboutSize = new Vector2(192f, 256f);
     //private static GrendelAbout AboutWindow = (GrendelAbout)ScriptableObject.CreateInstance(typeof(GrendelAbout));
     private const string kGrendelIconPath = "Assets/Third Party/Grendel/Textures/Grendel_Icon_Large_White.png";
     private static Rect kGrendelIconPosition = new Rect(16f, 16f, 128f, 128f);
@@ -37,13 +37,16 @@ public class GrendelAbout : EditorWindow
         GUILayout.BeginHorizontal();
         
             GUILayout.BeginVertical();
-                GUILayoutUtility.GetRect(kGrendelIconPosition.width + 16f, kGrendelIconPosition.height + 16f);                
-        
-                GUI.DrawTexture(kGrendelIconPosition, (Texture)AssetDatabase.LoadAssetAtPath(kGrendelIconPath,typeof(Texture)));
-                
+
                 GUILayout.BeginHorizontal();
                 GUILayout.FlexibleSpace();
-                    GUILayout.Label("Grendel Framework 1.0", EditorStyles.boldLabel);
+                    GUILayout.Box((Texture)AssetDatabase.LoadAssetAtPath(kGrendelIconPath,typeof(Texture)), GUI.skin.label, new GUILayoutOption[]{GUILayout.Width(kGrendelIconPosition.width), GUILayout.Height(kGrendelIconPosition.height)});
+                GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
+                    GUILayout.Label("Grendel Framework 1.01.1", EditorStyles.boldLabel);
                 GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
         

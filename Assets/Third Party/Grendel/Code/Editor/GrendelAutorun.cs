@@ -8,5 +8,6 @@ public class GrendelAutorun
     {
         SceneView.onSceneGUIDelegate += EditorInput.Update;
         EditorApplication.update += GameManagerEditor.Update;
+        SceneView.onSceneGUIDelegate += GrendelManager.OnSceneGUI;
     }
 }

@@ -19,6 +19,8 @@ public class FootoEntity : TNBehaviour
     public bool IsMonster;
     public float FieldOfView;
     
+    [HideInInspector]public Texture2D ColorChoices;
+    
     public System.Collections.Generic.List<ItemAttachPoint> AttachPoints = new System.Collections.Generic.List<ItemAttachPoint>();
     
     public System.Collections.Generic.List<WeaponClass> Weapons = new System.Collections.Generic.List<WeaponClass>();
@@ -65,6 +67,18 @@ public class FootoEntity : TNBehaviour
     protected void Start()
     {
         EventManager.Instance.AddHandler<UserInputKeyEvent>(InputHandler);
+        Color color = ColorChoices.GetPixel(Random.Range(0,8), Random.Range(0,8));
+        color.a = 0.5f;
+
+        foreach(Transform child in transform)
+        {
+            if (child.renderer == null)
+            {
+                continue;
+            }
+            
+            child.renderer.material.color = color;
+        }
     }
  
     private void SetupWeapons()

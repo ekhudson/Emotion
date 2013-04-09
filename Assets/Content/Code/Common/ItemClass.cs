@@ -7,4 +7,5 @@ public class ItemClass : MonoBehaviour
     public string ShortName = string.Empty;
     public string Description = string.Empty;
     public float Weight;
+    public int MaxStackSize = 100;
 }

@@ -6,8 +6,7 @@ using UnityEditor;
 
 namespace GrendelEditor.UI
 {
-
-     public static class CustomEditorGUI
+    public static class CustomEditorGUI
      {          
           
           public class ColorGridState
@@ -283,5 +282,11 @@ namespace GrendelEditor.UI
 
             return changed;
         }
+
+        public static void DrawSeparatorLayout()
+        {
+            GUILayout.Box(string.Empty, new GUILayoutOption[]{GUILayout.ExpandWidth(true), GUILayout.Height(1)});
+        }
+
      }
 }

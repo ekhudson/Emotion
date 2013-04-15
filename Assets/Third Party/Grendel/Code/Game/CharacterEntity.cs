@@ -10,7 +10,6 @@ public class CharacterEntity : Entity
     private Vector3 mCurrentMove = Vector3.zero;
     private bool mIsGrounded = false;
 
-
     public bool IsGrounded
     {
         get

@@ -26,6 +26,15 @@ public class UserInput : Singleton<UserInput>
             AltMouseButton = altMouseButton;
         }
 
+        public KeyBinding(string bindingName, KeyCode key, KeyCode altKey)
+        {
+            BindingName = bindingName;
+            Key = key;
+            AltKey = altKey;
+            MouseButton = MouseButtons.None;
+            AltMouseButton = MouseButtons.None;
+        }
+
         public bool IsDown
         {
             get

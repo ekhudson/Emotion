@@ -18,8 +18,8 @@ using System.Collections;
 
 public class ScreenNotification
 {	
-	private float _defaultHoldTime = 2.0f;
-	private float _defaultFadeTime = 2.0f;	
+	private float _defaultHoldTime = 0.75f;
+	private float _defaultFadeTime = 0.5f;
 	private GUIStyle _defaultGUIStyle = new GUIStyle();
 	private Texture2D _defaultTexture;
 	private Color _defaultBoxColor = new Color(0.25f, 0.25f, 0.25f, 0.75f);

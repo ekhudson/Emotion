@@ -11,6 +11,7 @@ public class FootoEntity : TNBehaviour
     Player mOwner = null;
     Vector3 mTarget = Vector3.zero;
     Quaternion mRotTarget;
+    public PlayerData PlayerInfo;
     public float MoveSpeed = 5f;
     public float RunModifier = 2f;
     public AnimationCurve JumpVelocityCurve;
@@ -18,9 +19,9 @@ public class FootoEntity : TNBehaviour
     public float MaxJumpTime = 1f;
     public bool IsMonster;
     public float FieldOfView;
-    
+
     [HideInInspector]public Texture2D ColorChoices;
-    
+
     public System.Collections.Generic.List<ItemAttachPoint> AttachPoints = new System.Collections.Generic.List<ItemAttachPoint>();
     
     public System.Collections.Generic.List<WeaponClass> Weapons = new System.Collections.Generic.List<WeaponClass>();
@@ -101,6 +102,11 @@ public class FootoEntity : TNBehaviour
                 if (attachPoint.AttachedItem == null)
                 {
                     GameObject weaponTemp = (GameObject)GameObject.Instantiate(Weapons[i].gameObject, attachPoint.PhysicalPoint.position, attachPoint.PhysicalPoint.rotation);
+                    //GameObject weaponTemp = new GameObject("_" + Weapons[i].ShortName, typeof(WeaponClass));
+                    //WeaponClass weap = weaponTemp.GetComponent<WeaponClass>();
+                    //weap = Weapons[i];
+                    //weaponTemp.transform.position = attachPoint.PhysicalPoint.position;
+                    //weaponTemp.transform.rotation = attachPoint.PhysicalPoint.rotation;
                     weaponTemp.transform.parent = attachPoint.PhysicalPoint;
                     Weapons[i] = weaponTemp.GetComponent<WeaponClass>();
                     attachPoint.AttachedItem = Weapons[i];

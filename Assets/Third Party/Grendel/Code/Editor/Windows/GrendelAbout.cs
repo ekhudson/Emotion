@@ -11,24 +11,36 @@ public class GrendelAbout : EditorWindow
     //private static GrendelAbout AboutWindow = (GrendelAbout)ScriptableObject.CreateInstance(typeof(GrendelAbout));
     private const string kGrendelIconPath = "Assets/Third Party/Grendel/Textures/Grendel_Icon_Large_White.png";
     private static Rect kGrendelIconPosition = new Rect(16f, 16f, 128f, 128f);
+    private static GrendelAbout mAboutWindowInstance;
 
     public static GrendelAbout AboutWindow
     {
         get
         {
-            return (GrendelAbout)ScriptableObject.CreateInstance(typeof(GrendelAbout));
+            if (mAboutWindowInstance == null)
+            {
+                mAboutWindowInstance = (GrendelAbout)ScriptableObject.CreateInstance(typeof(GrendelAbout));
+            }
+
+            return mAboutWindowInstance;
         }
+    }
+
+    public static void OnDestroy()
+    {
+        mAboutWindowInstance = null;
     }
     
     [MenuItem ("Help/About Grendel...")]
     public static void Init()
     {             
-        AboutWindow.ShowUtility();
+
         AboutWindow.name = kAboutWindowTitle;
         AboutWindow.title = kAboutWindowTitle;        
         AboutWindow.position = kAboutPosition;
         AboutWindow.minSize = kAboutSize;
-        AboutWindow.maxSize = kAboutSize;            
+        AboutWindow.maxSize = kAboutSize;
+        AboutWindow.ShowUtility();
     }
     
     private void OnGUI()

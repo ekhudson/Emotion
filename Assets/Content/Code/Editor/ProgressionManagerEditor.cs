@@ -8,7 +8,6 @@ public class ProgressionManagerEditor : GrendelEditor<ProgressionManager>
 {
     private int mNumLevels;
 
-
     [MenuItem("Colony/Create ProgressionManager Asset")]
     public static void CreateProgressionManager()
     {

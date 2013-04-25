@@ -8,7 +8,6 @@ public class GrendelAbout : EditorWindow
     private const string kAboutWindowTitle = "About Grendel";
     private static Rect kAboutPosition = new Rect(64f, 64f, 128f, 128f);
     private static Vector2 kAboutSize = new Vector2(192f, 256f);
-    //private static GrendelAbout AboutWindow = (GrendelAbout)ScriptableObject.CreateInstance(typeof(GrendelAbout));
     private const string kGrendelIconPath = "Assets/Third Party/Grendel/Textures/Grendel_Icon_Large_White.png";
     private static Rect kGrendelIconPosition = new Rect(16f, 16f, 128f, 128f);
     private static GrendelAbout mAboutWindowInstance;
@@ -31,7 +30,7 @@ public class GrendelAbout : EditorWindow
         mAboutWindowInstance = null;
     }
     
-    [MenuItem ("Help/About Grendel...")]
+    [MenuItem ("Grendel/About Grendel...")]
     public static void Init()
     {             
 

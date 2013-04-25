@@ -9,4 +9,5 @@ public class GrendelProjectData : ScriptableObject
 
     public GrendelGameOptions GameOptions;
     public GrendelConsoleOptions ConsoleOptions;
+    public GrendelAudioOptions AudioOptions;
 }

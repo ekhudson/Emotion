@@ -120,4 +120,11 @@ public class AudioManager : Singleton<AudioManager>
 			PlayMusicTrack(  AudioList.Instance.MusicTracks[0] );
 		}
 	}
+
+    public static void PlayAudioClipOneshot(AdjustableAudioClip clip, AudioSource source)
+    {
+        source.clip = clip.Clip;
+        source.pitch = clip.Pitch;
+        source.Play();
+    }
 }

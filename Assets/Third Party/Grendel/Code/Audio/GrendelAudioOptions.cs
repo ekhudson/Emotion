@@ -1,35 +1,43 @@
 using UnityEngine;
+
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 [System.Serializable]
 public class GrendelAudioOptions
 {
-    public int test;
-    private List<GrendelAudioChannel> mAudioChannels = new List<GrendelAudioChannel>();
-    private List<GrendelAudioBank> mAudioBanks = new List<GrendelAudioBank>();
+    [HideInInspector]public List<GrendelAudioChannel> AudioChannels = new List<GrendelAudioChannel>();
+    [HideInInspector]public List<GrendelAudioBank> AudioBanks = new List<GrendelAudioBank>();
 
-    public List<GrendelAudioChannel> AudioChannels
+    public const string AcceptedAudioFileTypes = "*.wav;*.mp3;*.ogg";
+
+    private static AudioSource mPreviewAudioSource;
+
+    public static AudioSource PreviewAudioSource
     {
         get
         {
-            return mAudioChannels;
-        }
-        set
-        {
-            mAudioChannels = value;
+            return mPreviewAudioSource;
         }
     }
 
-    public List<GrendelAudioBank> AudioBanks
+    public static void PlayAudioClipPreview(AdjustableAudioClip clip)
     {
-        get
+        if (mPreviewAudioSource == null)
         {
-            return mAudioBanks;
+            mPreviewAudioSource = new GameObject("_previewAudioClip", typeof(AudioSource)).GetComponent<AudioSource>();
+            mPreviewAudioSource.gameObject.hideFlags = HideFlags.HideAndDontSave;
         }
-        set
+        else if (mPreviewAudioSource.isPlaying && mPreviewAudioSource.clip == clip.Clip)
         {
-            mAudioBanks = value;
+            mPreviewAudioSource.Stop();
+            return;
         }
+
+        mPreviewAudioSource.gameObject.transform.position = Vector3.zero;
+        mPreviewAudioSource.clip = clip.Clip;
+        mPreviewAudioSource.pitch = clip.Pitch;
+        mPreviewAudioSource.Play();;
     }
 }

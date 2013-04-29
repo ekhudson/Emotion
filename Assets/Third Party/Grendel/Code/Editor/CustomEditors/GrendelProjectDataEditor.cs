@@ -100,6 +100,14 @@ public class GrendelProjectDataEditor : GrendelEditor<GrendelProjectData>
 
         for (int j = 0; j < Target.AudioOptions.AudioBanks.Count; j++)
         {
+            EditorGUILayout.Space();
+
+            EditorGUI.indentLevel--;
+
+            GUILayout.BeginVertical(EditorStyles.textField);
+
+            EditorGUILayout.Space();
+
             GUILayout.BeginHorizontal();
 
             Target.AudioOptions.AudioBanks[j].BankName = EditorGUILayout.TextField("Bank Name", Target.AudioOptions.AudioBanks[j].BankName);
@@ -113,8 +121,9 @@ public class GrendelProjectDataEditor : GrendelEditor<GrendelProjectData>
 
             GUILayout.EndHorizontal();
 
-            GUILayout.BeginHorizontal();
+            EditorGUI.indentLevel++;
 
+            GUILayout.BeginHorizontal();
 
             EditorGUILayout.LabelField("Bank Assets Location", string.Empty, EditorStyles.wordWrappedMiniLabel);
 
@@ -164,6 +173,12 @@ public class GrendelProjectDataEditor : GrendelEditor<GrendelProjectData>
                 }
             }
 
+            EditorGUILayout.Space();
+            EditorGUILayout.Space();
+
+            GUILayout.EndVertical();
+
+            EditorGUILayout.Space();
         }
 
         EditorGUILayout.Space();

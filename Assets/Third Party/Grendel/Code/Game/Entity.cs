@@ -130,7 +130,16 @@ public class Entity : BaseObject
     {
         foreach(Collider collider in mSearchRadius.ObjectList)
         {
-            _testEntity = EntityManager.EntityDictionary[ collider.gameObject.GetInstanceID() ];
+            try
+            {
+                _testEntity = EntityManager.EntityDictionary[ collider.gameObject.GetInstanceID() ];
+            }
+            catch
+            {
+                Debug.LogWarning(string.Format("The entity {0} was not found in the Entity Dictionary", collider.gameObject.name), this);
+                continue;
+            }
+
             if(_testEntity.Faction == this.Faction)
             {
                 mNearbyAllies.Add(_testEntity);

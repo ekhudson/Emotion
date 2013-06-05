@@ -29,7 +29,7 @@ public class MouseAimer : MonoBehaviour
 
         mMouseRay = MainCamera.Instance.camera.ScreenPointToRay(Input.mousePosition);
 
-        Physics.Raycast(mMouseRay,out mMouseRaycastHit,1000);
+        Physics.Raycast(mMouseRay,out mMouseRaycastHit,1000, ~(1 << LayerMask.NameToLayer("SearchRadii")));
 
         AimdotParticle.transform.position = mMouseRaycastHit.point;
 	}

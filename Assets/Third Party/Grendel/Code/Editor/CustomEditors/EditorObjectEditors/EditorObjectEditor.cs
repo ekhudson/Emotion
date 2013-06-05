@@ -564,9 +564,10 @@ public class EditorObjectEditor<T> : Editor where T : class
 				
 				Vector3 pos = eo.transform.position;
 				pos += (currentCamera.transform.right) * 0.5f;
-				pos += (currentCamera.transform.up) * 0.15f;							
-				
-				Handles.color = eo.NameConflict == true ? Color.red : Color.white;				
+				pos += (currentCamera.transform.up) * 0.15f;
+                pos += (currentCamera.transform.forward) * 0.15f;
+
+                Handles.color = eo.NameConflict == true ? Color.red : Color.white;
 						
 				if (GrendelEditorPreferences.DrawEditorObjectLabels)
 				{

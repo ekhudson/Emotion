@@ -51,7 +51,259 @@ public class AIController : MonoBehaviour
 
     private void Update()
     {
+        switch(mBehaviourState)
+        {
+            case MonsterBehaviourStates.ATTACKING:
 
+            break;
+
+            case MonsterBehaviourStates.CHASING:
+
+            break;
+
+            case MonsterBehaviourStates.FLEEING:
+
+            break;
+
+            case MonsterBehaviourStates.HIDING:
+
+            break;
+
+            case MonsterBehaviourStates.HUNTING:
+
+            break;
+
+            case MonsterBehaviourStates.IDLE:
+
+            break;
+        }
+    }
+
+    public void SetState(MonsterBehaviourStates newState)
+    {
+        if (newState == mBehaviourState)
+        {
+            return;
+        }
+
+        switch(newState)
+        {
+            case MonsterBehaviourStates.ATTACKING:
+
+                switch(mBehaviourState)
+                {
+                    case MonsterBehaviourStates.ATTACKING:
+
+                    break;
+
+                    case MonsterBehaviourStates.CHASING:
+
+                    break;
+
+                    case MonsterBehaviourStates.FLEEING:
+
+                    break;
+
+                    case MonsterBehaviourStates.HIDING:
+
+                    break;
+
+                    case MonsterBehaviourStates.HUNTING:
+
+                    break;
+
+                    case MonsterBehaviourStates.IDLE:
+        
+                    break;
+
+                    default:
+
+                    break;
+                }
+
+            break;
+
+            case MonsterBehaviourStates.CHASING:
+
+                switch(mBehaviourState)
+                {
+                    case MonsterBehaviourStates.ATTACKING:
+
+                    break;
+
+                    case MonsterBehaviourStates.CHASING:
+
+                    break;
+
+                    case MonsterBehaviourStates.FLEEING:
+
+                    break;
+
+                    case MonsterBehaviourStates.HIDING:
+
+                    break;
+
+                    case MonsterBehaviourStates.HUNTING:
+
+                    break;
+
+                    case MonsterBehaviourStates.IDLE:
+        
+                    break;
+
+                    default:
+
+                    break;
+                }
+
+            break;
+
+            case MonsterBehaviourStates.FLEEING:
+
+                switch(mBehaviourState)
+                {
+                    case MonsterBehaviourStates.ATTACKING:
+
+                    break;
+
+                    case MonsterBehaviourStates.CHASING:
+
+                    break;
+
+                    case MonsterBehaviourStates.FLEEING:
+
+                    break;
+
+                    case MonsterBehaviourStates.HIDING:
+
+                    break;
+
+                    case MonsterBehaviourStates.HUNTING:
+
+                    break;
+
+                    case MonsterBehaviourStates.IDLE:
+        
+                    break;
+
+                    default:
+
+                    break;
+                }
+
+            break;
+
+            case MonsterBehaviourStates.HIDING:
+
+                switch(mBehaviourState)
+                {
+                    case MonsterBehaviourStates.ATTACKING:
+
+                    break;
+
+                    case MonsterBehaviourStates.CHASING:
+
+                    break;
+
+                    case MonsterBehaviourStates.FLEEING:
+
+                    break;
+
+                    case MonsterBehaviourStates.HIDING:
+
+                    break;
+
+                    case MonsterBehaviourStates.HUNTING:
+
+                    break;
+
+                    case MonsterBehaviourStates.IDLE:
+        
+                    break;
+
+                    default:
+
+                    break;
+                }
+
+            break;
+
+            case MonsterBehaviourStates.HUNTING:
+
+                switch(mBehaviourState)
+                {
+                    case MonsterBehaviourStates.ATTACKING:
+
+                    break;
+
+                    case MonsterBehaviourStates.CHASING:
+
+                    break;
+
+                    case MonsterBehaviourStates.FLEEING:
+
+                    break;
+
+                    case MonsterBehaviourStates.HIDING:
+
+                    break;
+
+                    case MonsterBehaviourStates.HUNTING:
+
+                    break;
+
+                    case MonsterBehaviourStates.IDLE:
+        
+                    break;
+
+                    default:
+
+                    break;
+                }
+
+            break;
+
+            case MonsterBehaviourStates.IDLE:
+
+                switch(mBehaviourState)
+                {
+                    case MonsterBehaviourStates.ATTACKING:
+
+                    break;
+
+                    case MonsterBehaviourStates.CHASING:
+
+                    break;
+
+                    case MonsterBehaviourStates.FLEEING:
+
+                    break;
+
+                    case MonsterBehaviourStates.HIDING:
+
+                    break;
+
+                    case MonsterBehaviourStates.HUNTING:
+
+                    break;
+
+                    case MonsterBehaviourStates.IDLE:
+        
+                    break;
+
+                    default:
+
+                    break;
+                }
+
+            break;
+
+            default:
+
+            break;
+        }
+
+        mBehaviourState = newState;
     }
 
     private void LookForEntitiesByTag(string tag)
@@ -88,6 +340,11 @@ public class AIController : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if (!Application.isPlaying)
+        {
+            return;
+        }
+
         Gizmos.color = Color.yellow;
 
         SearchRadius searchRadius = (SearchRadius)GetComponentInChildren<SearchRadius>();

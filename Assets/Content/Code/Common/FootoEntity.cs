@@ -78,7 +78,7 @@ public class FootoEntity : TNBehaviour
                 continue;
             }
             
-            child.renderer.material.color = color;
+            child.renderer.material.color = PlayerInfo.PrimaryPlayerColor;
         }
     }
  
@@ -135,7 +135,7 @@ public class FootoEntity : TNBehaviour
                     Ray ray = MainCamera.Instance.camera.ScreenPointToRay(Input.mousePosition);
                     RaycastHit hit;
 
-                    if(Physics.Raycast(ray,out hit,1000))
+                    if(Physics.Raycast(ray,out hit,1000,~(1 << LayerMask.NameToLayer("SearchRadii"))))
                     {
                         Vector3 dif = hit.point - mController.BaseTransform.position;
                         dif.y = 0;
@@ -284,9 +284,11 @@ public class FootoEntity : TNBehaviour
                 tno.SendQuickly(4, Target.OthersSaved, mRotTarget);
 
             }
+
+            UpdatePosition();
         }
 
-        UpdatePosition();
+
 
     }
 

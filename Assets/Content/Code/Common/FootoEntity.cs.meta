@@ -1,9 +1,0 @@
-fileFormatVersion: 2
-guid: c0e2c53febcd7bf46accc5feba0ab05d
-MonoImporter:
-  serializedVersion: 2
-  defaultReferences:
-  - ColorChoices: {fileID: 2800000, guid: 233c8e9599897374984c16b3fb68aa97, type: 3}
-  executionOrder: 0
-  icon: {instanceID: 0}
-  userData: 
